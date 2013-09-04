@@ -299,9 +299,10 @@ def argument_parser():
         prog='new_module_openerp',
         description='Create new openerp module structure and basic files.',
         epilog="""
-This program was develop by Katherine Zaoral <kathy@vauxoo.com>.
-Openerp Developer Comunity at Vauxoo Team.
-Source code can be found @ lp:~katherine-zaoral-7/+junk/oerp_module.""",
+Openerp Developer Comunity Tool
+Development by Vauxoo Team (lp:~vauxoo)
+Coded by Katherine Zaoral <kathy@vauxoo.com>.
+Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         'name',
