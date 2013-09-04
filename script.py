@@ -1,5 +1,7 @@
 #!/usr/bin/python
 import os
+import sys
+import argparse
 
 #~ config repos 
 
@@ -29,9 +31,7 @@ repo_data = {
         'local': '~/bzr_projects/+junk/katherine-zaoral-7',
         },
 }
-
-default_parent_repo = 'addons-vauxoo'
-oerp_version_list = ['6.0', '6.1', '7.0']
+_oerp_version_list = ['6.0', '6.1', '7.0']
 
 class new_openerp_module:
 
@@ -48,8 +48,7 @@ class new_openerp_module:
         'static/src',
         'static/src/img']
 
-    def __init__(self, name, developer, parent_repo=default_parent_repo,
-                 version='7.0'):
+    def __init__(self, name, developer, parent_repo, version):
         """
         iniciialization of the module
         @param name: new module name
@@ -65,7 +64,7 @@ class new_openerp_module:
         self.directory = name
         self.developer = developer
 
-        if version in oerp_version_list:
+        if version in _oerp_version_list:
             self.version = version
         else:
             raise Exception("Bad parameters. '%s' Its not a valid openerp "
@@ -279,14 +278,79 @@ class %s_wizard(osv.TransientModel):
 
         return license_msg % (developer_str, planner_str, auditor_str)
 
+epilog_msg = """
+This program was develop by Katherine Zaoral <kathy@vauxoo.com>.
+Openerp Developer Comunity at Vauxoo Team.
+Source code can be found @ lp:~katherine-zaoral-7/+junk/new_module_script.
+"""
+
+def argument_parser():
+    """
+    This function create the help command line and manage and filter the 
+    parameters of this program (default values, choices values)
+    """
+
+    parser = argparse.ArgumentParser(
+        prog='new_module_openerp',
+        description='Create new openerp module structure and basic files.',
+        epilog=epilog_msg,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument(
+        'name',
+        metavar='MODULE_NAME',
+        type=str,
+        help='name of the module to create.')
+    parser.add_argument(
+        '-d','--developer',
+        metavar='DEVELOPER',
+        type=str,
+        help='name of developer',
+        required=True)
+    parser.add_argument(
+        '-r','--parent_repo',
+        metavar='PARENT_REPO',
+        type=str,
+        help='name of parent repo',
+        choices=repo_data.keys())
+    parser.add_argument(
+        '-ov','--oerp-version',
+        metavar='VERSION',
+        type=str,
+        choices=_oerp_version_list,
+        help='openerp version')
+    parser.add_argument('-c','--create-structure', action='store_true',
+        help='inicializate module / create new directory with basic files')
+    parser.add_argument('-b','--branch-create', action='store_true',
+        help='create a branch copy in the parent repo that will holds the new'
+             ' module')
+
+    parser.set_defaults(
+        version='7.0',
+        parent_repo='addons-vauxoo'
+    )
+
+    return parser.parse_args()
+
 def main():
-    module = new_openerp_module('xxy', 'kty')
-    #~ module.create_branch()
-    #~ module.create_main_directory()
-    #~ module.create_directories()
-    #~ module.create_init_files()
-    #~ module.create_openerp_file()
-    #~ module.create_py_files()
+
+    args = argument_parser()
+    print'\n----'*3
+    print'args', args
+    print'\n----'*3
+    exit()
+
+    module = new_openerp_module(
+        args.name, args.developer, args.parent_repo, args.version)
+
+    if branch_create:
+        module.create_branch()
+
+    if args.create_structure:
+        module.create_main_directory()
+        module.create_directories()
+        module.create_init_files()
+        module.create_openerp_file()
+        module.create_py_files()
 
 if __name__ == '__main__':
     main()
