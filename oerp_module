@@ -285,7 +285,8 @@ class %s_wizard(osv.TransientModel):
         after the creation from scratch.
         """
 
-        os.system('cd %s && bzr add && bzr ci -m %s && bzr push :parent' % (
+        print '... Commit the module incialization of strcutre and basic files'
+        os.system('cd %s && bzr add && bzr ci -m "%s" && bzr push :parent' % (
             self.path, '[ADD] Module structure and basic files'))
 
 
@@ -324,7 +325,7 @@ Source code can be found @ lp:~katherine-zaoral-7/+junk/oerp_module.""",
         metavar='VERSION',
         type=str,
         choices=_oerp_version_list,
-        help='openerp version')
+        help='Openerp version number')
     parser.add_argument(
         '-c', '--create-structure', action='store_true',
         help='inicializate module / create new directory with basic files')
@@ -334,7 +335,7 @@ Source code can be found @ lp:~katherine-zaoral-7/+junk/oerp_module.""",
              ' module')
 
     parser.set_defaults(
-        version='7.0',
+        oerp_version='7.0',
         parent_repo='addons-vauxoo'
     )
 
@@ -348,12 +349,11 @@ def main():
     print'\n... Configuration of Parameters Set'
     for (parameter, value) in args.__dict__.iteritems():
         print '%s = %s' % (parameter, value)
-    exit()
 
     module = oerp_module(
-        args.name, args.developer, args.parent_repo, args.version)
+        args.name, args.developer, args.parent_repo, args.oerp_version)
 
-    if branch_create:
+    if args.branch_create:
         module.create_branch()
 
     if args.create_structure:
