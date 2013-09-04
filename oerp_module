@@ -3,7 +3,7 @@ import os
 import sys
 import argparse
 
-#~ config repos 
+#~ config repos
 
 repo_data = {
     'addons-vauxoo': {
@@ -11,27 +11,28 @@ repo_data = {
         'serie': '7.0',
         'group': '~vauxoo',
         'local': '~/bzr_projects/addons-vauxoo/7.0',
-        },
+    },
     'vauxoo-private': {
         'name': 'vauxoo-private',
         'serie': False,
         'group': '~vauxoo-private',
         'local': '~/bzr_projects/vauxoo-private',
-        },
+    },
     'ovl70': {
         'name': 'openerp-venezuela-localization',
         'serie': '7.0',
         'group': '~vauxoo',
         'local': '~/bzr_projects/_VE/ovl_branches/ovl70',
-        },
+    },
     'junk': {
         'name': '~katherine-zaoral-7/+junk',
         'serie': False,
         'group': '~katherine-zaoral-7',
         'local': '~/bzr_projects/+junk/katherine-zaoral-7',
-        },
+    },
 }
 _oerp_version_list = ['6.0', '6.1', '7.0']
+
 
 class new_openerp_module:
 
@@ -209,7 +210,7 @@ class %s(osv.Model):
 
     _defaults = {
     }
-""" % (self.name, self.name.replace('_','.')),
+""" % (self.name, self.name.replace('_', '.')),
             'wizard/%s.py' % (self.name,): """
 from openerp.osv import osv, fields
 from openerp.tools.translate import _
@@ -231,7 +232,7 @@ class %s_wizard(osv.TransientModel):
     _defaults = {
     }
 
-""" % (self.name, self.name.replace('_','.')),
+""" % (self.name, self.name.replace('_', '.')),
         }
 
         print '... Create the model and wirzard py files'
@@ -246,7 +247,7 @@ class %s_wizard(osv.TransientModel):
         """
 
         license_msg = \
-"""#!/usr/bin/python
+            """#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -280,17 +281,17 @@ class %s_wizard(osv.TransientModel):
 
     def branch_changes_apply(self):
         """
-        Create one revision to commit the structure and basic module files 
+        Create one revision to commit the structure and basic module files
         after the creation from scratch.
         """
-        
+
         os.system('cd %s && bzr add && bzr ci -m %s && bzr push :parent' % (
             self.path, '[ADD] Module structure and basic files'))
 
 
 def argument_parser():
     """
-    This function create the help command line and manage and filter the 
+    This function create the help command line and manage and filter the
     parameters of this program (default values, choices values)
     """
     parser = argparse.ArgumentParser(
@@ -307,26 +308,28 @@ Source code can be found @ lp:~katherine-zaoral-7/+junk/new_module_script.""",
         type=str,
         help='name of the module to create.')
     parser.add_argument(
-        '-d','--developer',
+        '-d', '--developer',
         metavar='DEVELOPER',
         type=str,
         help='name of developer',
         required=True)
     parser.add_argument(
-        '-r','--parent_repo',
+        '-r', '--parent_repo',
         metavar='PARENT_REPO',
         type=str,
         help='name of parent repo',
         choices=repo_data.keys())
     parser.add_argument(
-        '-ov','--oerp-version',
+        '-ov', '--oerp-version',
         metavar='VERSION',
         type=str,
         choices=_oerp_version_list,
         help='openerp version')
-    parser.add_argument('-c','--create-structure', action='store_true',
+    parser.add_argument(
+        '-c', '--create-structure', action='store_true',
         help='inicializate module / create new directory with basic files')
-    parser.add_argument('-b','--branch-create', action='store_true',
+    parser.add_argument(
+        '-b', '--branch-create', action='store_true',
         help='create a branch copy in the parent repo that will holds the new'
              ' module')
 
@@ -336,6 +339,7 @@ Source code can be found @ lp:~katherine-zaoral-7/+junk/new_module_script.""",
     )
 
     return parser.parse_args()
+
 
 def main():
 
