@@ -34,7 +34,7 @@ repo_data = {
 _oerp_version_list = ['6.0', '6.1', '7.0']
 
 
-class new_openerp_module:
+class oerp_module:
 
     directory_list = [
         'model',
@@ -300,7 +300,7 @@ def argument_parser():
         epilog="""
 This program was develop by Katherine Zaoral <kathy@vauxoo.com>.
 Openerp Developer Comunity at Vauxoo Team.
-Source code can be found @ lp:~katherine-zaoral-7/+junk/new_module_script.""",
+Source code can be found @ lp:~katherine-zaoral-7/+junk/oerp_module.""",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         'name',
@@ -349,7 +349,7 @@ def main():
     print'\n----'*3
     exit()
 
-    module = new_openerp_module(
+    module = oerp_module(
         args.name, args.developer, args.parent_repo, args.version)
 
     if branch_create:
