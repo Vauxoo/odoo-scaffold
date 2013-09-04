@@ -288,22 +288,18 @@ class %s_wizard(osv.TransientModel):
             self.path, '[ADD] Module structure and basic files'))
 
 
-epilog_msg = """
-This program was develop by Katherine Zaoral <kathy@vauxoo.com>.
-Openerp Developer Comunity at Vauxoo Team.
-Source code can be found @ lp:~katherine-zaoral-7/+junk/new_module_script.
-"""
-
 def argument_parser():
     """
     This function create the help command line and manage and filter the 
     parameters of this program (default values, choices values)
     """
-
     parser = argparse.ArgumentParser(
         prog='new_module_openerp',
         description='Create new openerp module structure and basic files.',
-        epilog=epilog_msg,
+        epilog="""
+This program was develop by Katherine Zaoral <kathy@vauxoo.com>.
+Openerp Developer Comunity at Vauxoo Team.
+Source code can be found @ lp:~katherine-zaoral-7/+junk/new_module_script.""",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         'name',
