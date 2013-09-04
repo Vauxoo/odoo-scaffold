@@ -278,12 +278,14 @@ class %s_wizard(osv.TransientModel):
 
         return license_msg % (developer_str, planner_str, auditor_str)
 
-module = new_openerp_module('xxy', 'kty')
-#~ module.create_branch()
-module.create_main_directory()
-module.create_directories()
-module.create_init_files()
-module.create_openerp_file()
-module.create_py_files()
+def main():
+    module = new_openerp_module('xxy', 'kty')
+    #~ module.create_branch()
+    #~ module.create_main_directory()
+    #~ module.create_directories()
+    #~ module.create_init_files()
+    #~ module.create_openerp_file()
+    #~ module.create_py_files()
 
-
+if __name__ == '__main__':
+    main()
