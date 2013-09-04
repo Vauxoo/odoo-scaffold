@@ -278,6 +278,16 @@ class %s_wizard(osv.TransientModel):
 
         return license_msg % (developer_str, planner_str, auditor_str)
 
+    def branch_changes_apply(self):
+        """
+        Create one revision to commit the structure and basic module files 
+        after the creation from scratch.
+        """
+        
+        os.system('cd %s && bzr add && bzr ci -m %s && bzr push :parent' % (
+            self.path, '[ADD] Module structure and basic files'))
+
+
 epilog_msg = """
 This program was develop by Katherine Zaoral <kathy@vauxoo.com>.
 Openerp Developer Comunity at Vauxoo Team.
@@ -351,6 +361,7 @@ def main():
         module.create_init_files()
         module.create_openerp_file()
         module.create_py_files()
+        module.branch_changes_apply()
 
 if __name__ == '__main__':
     main()
