@@ -88,7 +88,8 @@ class new_openerp_module:
 
     def create_branch(self):
         """
-        Create a new branch for module:
+        Create a new branch for the development module using the parent repo
+        serie branch like point of start:
         1. create module new local branch by copying the parent local repo
         2. create module new cloud branch by copying the parent cloud repo
         3. link both local and cloud branches
