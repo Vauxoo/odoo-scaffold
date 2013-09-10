@@ -130,6 +130,7 @@ class oerp_module:
 
     def create_main_directory(self):
         """
+        Create the module main directory with the module name.
         """
         print '... Create module main directory'
         os.system('mkdir %s' % (self.path))
