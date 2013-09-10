@@ -44,9 +44,14 @@ class oerp_module:
         'workflow',
         'data',
         'demo',
+        'doc',
+        'doc/images',
         'test',
+        'report',
+        'security',
         'static',
         'static/src',
+        'static/src/description',
         'static/src/img']
 
     def __init__(self, name, developer, parent_repo, version):
