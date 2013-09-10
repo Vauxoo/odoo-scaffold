@@ -50,8 +50,8 @@ class oerp_module:
         'report',
         'security',
         'static',
+        'static/description',
         'static/src',
-        'static/src/description',
         'static/src/img']
 
     def __init__(self, name, developer, parent_repo, version):
