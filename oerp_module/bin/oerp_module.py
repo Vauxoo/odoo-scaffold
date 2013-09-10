@@ -10,7 +10,7 @@ repo_data = {
         'name': 'addons-vauxoo',
         'serie': '7.0',
         'group': '~vauxoo',
-        'local': '~/bzr_projects/addons-vauxoo/7.0',
+        'local': '~/bzr_projects/addons_vauxoo_branches/7.0-addons-vauxoo',
     },
     'vauxoo-private': {
         'name': 'vauxoo-private',
@@ -103,7 +103,7 @@ class oerp_module:
         print 'Create new module local branch'
         os.system('cp %s %s -r' % (
             self.parent_repo['local'], self.branch_name))
-        os.system('echo | cat - > .bzr/branch/branch.conf')
+        os.system('echo \'\' | cat - > .bzr/branch/branch.conf')
 
         print 'Create new module cloud branch'
         os.system('bzr branch lp:%s/%s/%s lp:%s/%s/%s' % (
