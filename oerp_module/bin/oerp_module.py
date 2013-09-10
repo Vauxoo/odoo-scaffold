@@ -137,8 +137,8 @@ class oerp_module:
 
     def create_directories(self):
         """
-        Create the base directories taking into account the direcotory config
-        list
+        Create the base directories taking into account the directory config
+        list.
         """
         print '... Create module structure dicectories'
         for strc_dir in self.directory_list:
