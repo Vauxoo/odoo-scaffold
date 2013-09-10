@@ -145,6 +145,14 @@ class oerp_module:
             os.system('mkdir %s/%s' % (self.path, strc_dir))
         return True
 
+    def create_base_files(self):
+        """
+        Create the base files for the module, include de init files, the
+        openerp file and the index.html and the icon.png file.
+        """
+        self.create_init_files()
+        self.create_openerp_file()
+
     def create_init_files(self):
         """
         Create init files with the license set taking into account the module
@@ -366,8 +374,7 @@ def main():
     if args.create_structure:
         module.create_main_directory()
         module.create_directories()
-        module.create_init_files()
-        module.create_openerp_file()
+        module.create_base_files()
         module.create_py_files()
         module.branch_changes_apply()
 
