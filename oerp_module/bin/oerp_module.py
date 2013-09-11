@@ -90,6 +90,7 @@ class oerp_module:
 
         self.path = '%s/%s' % (self.branch_name, self.directory)
         self.license_msg = self.set_license_msg()
+        return True
 
     def create_branch(self):
         """
@@ -127,6 +128,7 @@ class oerp_module:
         os.system('cd %s && bzr push lp:%s/%s/%s --remember' % (
             self.branch_name, self.repo_group, self.repo_name,
             self.branch_name))
+        return True
 
     def create_main_directory(self):
         """
@@ -134,6 +136,7 @@ class oerp_module:
         """
         print '... Create module main directory'
         os.system('mkdir %s' % (self.path))
+        return True
 
     def create_directories(self):
         """
@@ -154,6 +157,7 @@ class oerp_module:
         self.create_openerp_file()
         self.add_icon_file()
         self.create_index_html_file()
+        return True
 
     def create_init_files(self):
         """
@@ -170,6 +174,7 @@ class oerp_module:
         for (new_file, content) in init_files.iteritems():
             os.system('echo """%s""" | cat - > %s' % (
                 self.license_msg + content, '%s/%s' % (self.path, new_file)))
+        return True
 
     def create_openerp_file(self):
         """
@@ -195,12 +200,14 @@ class oerp_module:
         print '... Create the openerp descriptive file'
         os.system('echo """%s""" | cat - > %s' % (
             self.license_msg + content, '%s/__openerp__.py' % (self.path,)))
+        return True
 
     def add_icon_file(self):
         """
         Add the icon.png file to the module.
         """
         os.system('cp src/icon.png %s/%s' % (self.path, strc_dir))
+        return True
 
     def create_index_html_file(self):
         """
@@ -208,7 +215,7 @@ class oerp_module:
         static/description/index.html
         """
         os.system('touch %s/static/description/index.html' % (self.path,))
-        
+        return True
 
     def create_py_files(self):
         """
@@ -269,6 +276,7 @@ class %s_wizard(osv.TransientModel):
         for (new_file, content) in py_files.iteritems():
             os.system('echo """%s""" | cat - > %s' % (
                 self.license_msg + content, '%s/%s' % (self.path, new_file)))
+        return True
 
     def set_license_msg(self):
         """
@@ -318,6 +326,7 @@ class %s_wizard(osv.TransientModel):
         print '... Commit the module incialization of strcutre and basic files'
         os.system('cd %s && bzr add && bzr ci -m "%s" && bzr push :parent' % (
             self.path, '[ADD] Module structure and basic files'))
+        return True
 
 
 def argument_parser():
