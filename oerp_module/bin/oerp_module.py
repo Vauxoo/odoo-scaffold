@@ -324,7 +324,16 @@ class %s_wizard(osv.TransientModel):
         """
 
         print '... Commit the module incialization of strcutre and basic files'
-        os.system('cd %s && bzr add && bzr ci -m "%s" && bzr push :parent' % (
+        os.system('cd %s && bzr add && bzr ci -m "%s"' % (
+            self.path, '[ADD] Module structure and basic files'))
+        return True
+
+    def push_changes(self):
+        """
+        Push changes of the parent branch at the cloud 
+        """
+        print '... Push changes to parent branch at cloud'
+        os.system('bzr push :parent' % (
             self.path, '[ADD] Module structure and basic files'))
         return True
 
