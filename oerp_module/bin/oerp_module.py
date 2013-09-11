@@ -103,7 +103,7 @@ class %s_wizard(osv.TransientModel):
     'category': '',
     'description': '''
 ''',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'data': [],
     'demo': [],
     'test': [],
