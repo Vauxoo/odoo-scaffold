@@ -384,7 +384,9 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         '-d', '--developer',
         metavar='DEVELOPER',
         type=str,
-        help='developer suffix that use for his/her branch',
+        help=str('branch suffix. Generally developer acronym name. It use when'
+                 ' creating the branch for identify the team user owner in a'
+                 ' simply way'),
         required=True)
     parser.add_argument(
         '-r', '--parent_repo',
