@@ -215,7 +215,7 @@ class oerp_module(object):
         print 'Create new module local branch'
         os.system('cp %s %s -r' % (
             self.parent_repo['local'], self.branch_name))
-        os.system('echo \'\' | cat - > .bzr/branch/branch.conf')
+        os.system('echo \'\' | cat - > %s/.bzr/branch/branch.conf'% (self.path,))
 
         print 'Create new module cloud branch'
         os.system('bzr branch lp:%s/%s/%s lp:%s/%s/%s' % (
