@@ -314,22 +314,16 @@ class oerp_module(object):
         os.system('touch %s/static/description/index.html' % (self.path,))
         return True
 
-    def create_py_files(self):
+    def create_py_files(self, file_py):
         """
         """
-        py_files = {
-            'model/%s.py' % (self.name,):
-            self.template.model_py % (self.name, self.name.replace('_', '.')),
-            #~ 'wizard/%s.py' % (self.name,): self.template.wizard_py % (
-                #~ self.name, self.name.replace('_', '.')),
-        }
-        #~ TODO: modulate this method to manage the create new py files for
-        #~ wizards and others
-
         print '... Create the model and wirzard py files'
-        for (new_file, content) in py_files.iteritems():
-            os.system('echo """%s""" | cat - > %s' % (
-                self.license_msg + content, '%s/%s' % (self.path, new_file)))
+        new_file = '%s/%s.py' % (file_py, self.name)
+        content = self.license_msg + getattr(
+            self.template, file_py + '_py') % (
+                self.name, self.name.replace('_', '.'))
+        os.system('echo """%s""" | cat - > %s' % (
+            content, '%s/%s' % (self.path, new_file)))
         return True
 
     def set_license_msg(self):
@@ -412,8 +406,11 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         help='create a branch copy in the parent repo that will holds the new'
              ' module')
     parser.add_argument(
-        '-a', '--append-model-file', action='store_true',
-        help='append a file to the module')
+        '-a', '--append-file',
+        metavar='TYPE_OF_FILE',
+        type=str,
+        help='append a file to the module',
+        choices=['model', 'wizard'])
 
     parser.set_defaults(
         oerp_version='7.0',
@@ -442,8 +439,8 @@ def main():
         module.create_directories()
         module.create_base_files()
 
-    if args.append_model_file:
-        module.create_py_files()
+    if args.append_file:
+        module.create_py_files(args.append_file)
 
         #~ module.branch_changes_apply()
 
