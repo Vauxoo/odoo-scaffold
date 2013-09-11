@@ -317,8 +317,11 @@ class oerp_module(object):
         py_files = {
             'model/%s.py' % (self.name,):
             self.template.model_py % (self.name, self.name.replace('_', '.')),
-            'wizard/%s.py' % (self.name,): self.template.wizard_py % (self.name, self.name.replace('_', '.')),
+            #~ 'wizard/%s.py' % (self.name,): self.template.wizard_py % (
+                #~ self.name, self.name.replace('_', '.')),
         }
+        #~ TODO: modulate this method to manage the create new py files for
+        #~ wizards and others
 
         print '... Create the model and wirzard py files'
         for (new_file, content) in py_files.iteritems():
