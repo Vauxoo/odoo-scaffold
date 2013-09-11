@@ -276,8 +276,8 @@ class oerp_module(object):
         """
         init_files = {
             '__init__.py': 'import model\nimport wizard',
-            'model/__init__.py': 'import %s' % (self.name,),
-            'wizard/__init__.py': 'import %s' % (self.name,),
+            'model/__init__.py': '',
+            'wizard/__init__.py': '',
         }
 
         print '... Creating init files'
