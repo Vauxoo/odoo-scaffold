@@ -40,6 +40,33 @@ class oerp_template(object):
     Contains the files templates
     """
 
+    license_msg = \
+"""#!/usr/bin/python
+# -*- encoding: utf-8 -*-
+###############################################################################
+#    Module Writen to OpenERP, Open Source Management Solution
+#    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
+#    All Rights Reserved
+############# Credits #########################################################
+#    Coded by: %s
+#    Planified by: %s
+#    Audited by: %s
+###############################################################################
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as published
+#    by the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+###############################################################################
+"""
+
     model_py = \
 """
 from openerp.osv import fields, osv, orm
@@ -167,8 +194,8 @@ class oerp_module(object):
                             parent_repo,))
 
         self.path = '%s/%s' % (self.branch_name, self.directory)
-        self.license_msg = self.set_license_msg()
         self.template = oerp_template()
+        self.license_msg = self.set_license_msg()
         return None
 
     def create_branch(self):
@@ -305,32 +332,7 @@ class oerp_module(object):
         and auditors info.
         """
 
-        license_msg = \
-            """#!/usr/bin/python
-# -*- encoding: utf-8 -*-
-###############################################################################
-#    Module Writen to OpenERP, Open Source Management Solution
-#    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
-#    All Rights Reserved
-############# Credits #########################################################
-#    Coded by: %s
-#    Planified by: %s
-#    Audited by: %s
-###############################################################################
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as published
-#    by the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-###############################################################################
-"""
+        license_msg = self.template.license_msg
 
         developer_str = 'Katherine Zaoral <kathy@vauxoo.com>'
         planner_str = 'Humberto Arocha <hbto@vauxoo.com>'
