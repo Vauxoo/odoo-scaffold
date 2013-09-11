@@ -381,8 +381,8 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         type=str,
         help='name of the module to create.')
     parser.add_argument(
-        '-d', '--developer',
-        metavar='DEVELOPER',
+        '-s', '--branch-suffix',
+        metavar='DEVELOPER_ACRONYM',
         type=str,
         help=str('branch suffix. Generally developer acronym name. It use when'
                  ' creating the branch for identify the team user owner in a'
@@ -425,13 +425,13 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
 def main():
 
     args = argument_parser()
-    
+
     print'\n... Configuration of Parameters Set'
     for (parameter, value) in args.__dict__.iteritems():
         print '%s = %s' % (parameter, value)
 
     module = oerp_module(
-        args.name, args.developer, args.parent_repo, args.oerp_version)
+        args.name, args.branch_suffix, args.parent_repo, args.oerp_version)
 
     if args.branch_create:
         module.create_branch()
