@@ -162,7 +162,8 @@ class oerp_module(object):
         'static/src/xml',
         'static/src/img']
 
-    def __init__(self, name, branch_suffix, parent_repo, version):
+    def __init__(self, name, branch_suffix, parent_repo, version,
+                 module_developers):
         """
         iniciialization of the module
         @param name: new module name
@@ -198,7 +199,7 @@ class oerp_module(object):
 
         self.path = '%s/%s' % (self.branch_name, self.directory)
         self.template = oerp_template()
-        self.license_msg = self.set_license_msg()
+        self.license_msg = self.set_license_msg(module_developers)
         return None
 
     def create_branch(self):
@@ -326,7 +327,7 @@ class oerp_module(object):
             content, '%s/%s' % (self.path, new_file)))
         return True
 
-    def set_license_msg(self):
+    def set_license_msg(self, module_developers):
         """
         Take the default template for license and add the developers, planners
         and auditors info.
@@ -334,11 +335,11 @@ class oerp_module(object):
 
         license_msg = self.template.license_msg
 
-        developer_str = 'Katherine Zaoral <kathy@vauxoo.com>'
+        #~ developer_str = 'Katherine Zaoral <kathy@vauxoo.com>'
         planner_str = 'Humberto Arocha <hbto@vauxoo.com>'
         auditor_str = 'Humberto Arocha <hbto@vauxoo.com>'
 
-        return license_msg % (developer_str, planner_str, auditor_str)
+        return license_msg % (module_developers, planner_str, auditor_str)
 
     def branch_changes_apply(self):
         """
@@ -413,6 +414,15 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         type=str,
         help='append a file to the module',
         choices=['model', 'wizard'])
+    parser.add_argument(
+        '-d', '--module-developers',
+        metavar='DEVELOPERS INFO',
+        type=str,
+        help=str('A string with the module developers information. The format'
+                 ' of this string is \'First Developer Name'
+                 ' <developer@mail.com>, Second Developer Name'
+                 ' <developerX@mail.com>\''),
+        required=True)
 
     parser.set_defaults(
         oerp_version='7.0',
@@ -431,7 +441,8 @@ def main():
         print '%s = %s' % (parameter, value)
 
     module = oerp_module(
-        args.name, args.branch_suffix, args.parent_repo, args.oerp_version)
+        args.name, args.branch_suffix, args.parent_repo, args.oerp_version,
+        args.module_developers)
 
     if args.branch_create:
         module.create_branch()
