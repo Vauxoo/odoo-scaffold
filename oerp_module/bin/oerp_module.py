@@ -34,7 +34,7 @@ repo_data = {
 _oerp_version_list = ['6.0', '6.1', '7.0']
 
 
-class oerp_module:
+class oerp_module(object):
 
     directory_list = [
         'model',
