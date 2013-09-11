@@ -34,6 +34,65 @@ repo_data = {
 _oerp_version_list = ['6.0', '6.1', '7.0']
 
 
+class oerp_template(object):
+
+    """
+    Contains the files templates
+    """
+
+    model_py = \
+"""
+from openerp.osv import fields, osv, orm
+from openerp.tools.translate import _
+from openerp import tools
+
+
+class %s(osv.Model):
+
+    _name = '%s'
+    _description = _('Need to set the model name')
+    _inherit = ['mail.thread']
+
+    '''
+    Need to set the model description
+    '''
+
+    _columns = {
+        'name': fields.char(
+            _('Name'),
+            required=True,
+            size=64,
+            help=_('Name')),
+    }
+
+    _defaults = {
+    }
+"""
+
+    wizard_py = \
+"""
+from openerp.osv import osv, fields
+from openerp.tools.translate import _
+import decimal_precision as dp
+
+
+class %s_wizard(osv.TransientModel):
+
+    _name = '%s'
+    _description = _('Need to set the model name')
+
+    '''
+    Need to set the model description
+    '''
+
+    _columns = {
+    }
+
+    _defaults = {
+    }
+
+"""
+
 class oerp_module(object):
 
     directory_list = [
@@ -90,6 +149,7 @@ class oerp_module(object):
 
         self.path = '%s/%s' % (self.branch_name, self.directory)
         self.license_msg = self.set_license_msg()
+        self.template = oerp_template()
         return True
 
     def create_branch(self):
@@ -221,55 +281,9 @@ class oerp_module(object):
         """
         """
         py_files = {
-            'model/%s.py' % (self.name,): """
-from openerp.osv import fields, osv, orm
-from openerp.tools.translate import _
-from openerp import tools
-
-
-class %s(osv.Model):
-
-    _name = '%s'
-    _description = _('Need to set the model name')
-    _inherit = ['mail.thread']
-
-    '''
-    Need to set the model description
-    '''
-
-    _columns = {
-        'name': fields.char(
-            _('Name'),
-            required=True,
-            size=64,
-            help=_('Name')),
-    }
-
-    _defaults = {
-    }
-""" % (self.name, self.name.replace('_', '.')),
-            'wizard/%s.py' % (self.name,): """
-from openerp.osv import osv, fields
-from openerp.tools.translate import _
-import decimal_precision as dp
-
-
-class %s_wizard(osv.TransientModel):
-
-    _name = '%s'
-    _description = _('Need to set the model name')
-
-    '''
-    Need to set the model description
-    '''
-
-    _columns = {
-    }
-
-    _defaults = {
-    }
-
-""" % (self.name, self.name.replace('_', '.')),
+            'model/%s.py' % (self.name,):
+            self.template.model_py % (self.name, self.name.replace('_', '.')),
+            'wizard/%s.py' % (self.name,): self.template.wizard_py % (self.name, self.name.replace('_', '.')),
         }
 
         print '... Create the model and wirzard py files'
