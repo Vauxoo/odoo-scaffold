@@ -390,7 +390,7 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         '-d', '--developer',
         metavar='DEVELOPER',
         type=str,
-        help='name of developer',
+        help='developer suffix that use for his/her branch',
         required=True)
     parser.add_argument(
         '-r', '--parent_repo',
