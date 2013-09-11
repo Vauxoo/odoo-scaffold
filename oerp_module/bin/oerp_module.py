@@ -157,6 +157,9 @@ class oerp_module(object):
         'static',
         'static/description',
         'static/src',
+        'static/src/js',
+        'static/src/css',
+        'static/src/xml',
         'static/src/img']
 
     def __init__(self, name, developer, parent_repo, version):
