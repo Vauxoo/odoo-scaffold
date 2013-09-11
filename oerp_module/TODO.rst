@@ -22,8 +22,6 @@ TODO
 - crear opciones de listado que permitan --show la información de los 
   repositorios configurados y de los developers, asi como tambien una funcion
   para modificar uno o crear uno nuevo directamente de la linea de comandos.
-- incluir las carpetas que estan discutidas en el correo de norma tecnica del
-  equipo que hayan faltado, incluyendo el archivito del icon.py
 - hacer un decorador para manejar que los paramtros que ya fueron validados
   en argsparse function () vuelvan a revisarse antes de ejectuar la funcion
   de inicializacion del objeto oerp_module.
