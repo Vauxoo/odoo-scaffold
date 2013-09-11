@@ -232,6 +232,7 @@ class oerp_module(object):
         Create the base files for the module, include de init files, the
         openerp file and the index.html and the icon.png file.
         """
+        print '... Create module base files'
         self.create_init_files()
         self.create_openerp_file()
         self.add_icon_file()
@@ -270,6 +271,7 @@ class oerp_module(object):
         """
         Add the icon.png file to the module.
         """
+        print '... Adding module icon'
         os.system('cp ../src/icon.png %s/static/src/img/' % (self.path))
         return True
 
@@ -278,6 +280,7 @@ class oerp_module(object):
         Touch to create a clean index.html file in the
         static/description/index.html
         """
+        print '... Creating a blanck index.html for module description'
         os.system('touch %s/static/description/index.html' % (self.path,))
         return True
 
