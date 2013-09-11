@@ -150,7 +150,7 @@ class oerp_module(object):
         self.path = '%s/%s' % (self.branch_name, self.directory)
         self.license_msg = self.set_license_msg()
         self.template = oerp_template()
-        return True
+        return None
 
     def create_branch(self):
         """
