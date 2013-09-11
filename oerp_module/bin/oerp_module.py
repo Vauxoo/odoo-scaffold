@@ -162,12 +162,12 @@ class oerp_module(object):
         'static/src/xml',
         'static/src/img']
 
-    def __init__(self, name, developer, parent_repo, version):
+    def __init__(self, name, branch_suffix, parent_repo, version):
         """
         iniciialization of the module
         @param name: new module name
         @param version: the version of the new model
-        @param developer:
+        @param branch_suffix:
         @param repository:
         """
 
@@ -176,7 +176,7 @@ class oerp_module(object):
         print '\n... Checking Script Parameters'
         self.name = name
         self.directory = name
-        self.developer = developer
+        self.branch_suffix = branch_suffix
 
         if version in _oerp_version_list:
             self.version = version
@@ -185,7 +185,7 @@ class oerp_module(object):
                             "version" % (version,))
 
         if parent_repo in repo_data:
-            self.branch_name = '%s-dev-%s-%s' % (version, name, developer)
+            self.branch_name = '%s-dev-%s-%s' % (version, name, branch_suffix)
             self.parent_repo = repo_data[parent_repo].copy()
             self.repo_name = repo_data[parent_repo]['name']
             self.repo_group = repo_data[parent_repo]['group']
