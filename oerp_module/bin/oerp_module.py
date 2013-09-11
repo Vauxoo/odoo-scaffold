@@ -93,6 +93,25 @@ class %s_wizard(osv.TransientModel):
 
 """
 
+    openerp_py = \
+"""
+{
+    'name': '%s',
+    'version': '1.0',
+    'author': 'Vauxoo C.A.',
+    'website': 'http://www.openerp.com.ve',
+    'category': '',
+    'description': '''
+''',
+    'depends': ['base'],
+    'data': [],
+    'demo': [],
+    'test': [],
+    'active': False,
+    'installable': True,
+}"""
+
+
 class oerp_module(object):
 
     directory_list = [
@@ -240,22 +259,7 @@ class oerp_module(object):
         """
         Create the openerp descriptive file
         """
-        content = """
-{
-    'name': '%s',
-    'version': '1.0',
-    'author': 'Vauxoo C.A.',
-    'website': 'http://www.openerp.com.ve',
-    'category': '',
-    'description': '''
-''',
-    'depends': ['base'],
-    'data': [],
-    'demo': [],
-    'test': [],
-    'active': False,
-    'installable': True,
-}""" % (self.name,)
+        content = self.template.openerp_py % (self.name,)
 
         print '... Create the openerp descriptive file'
         os.system('echo """%s""" | cat - > %s' % (
