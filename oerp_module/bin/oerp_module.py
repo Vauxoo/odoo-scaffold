@@ -206,7 +206,7 @@ class oerp_module(object):
         """
         Add the icon.png file to the module.
         """
-        os.system('cp src/icon.png %s/%s' % (self.path, strc_dir))
+        os.system('cp ../src/icon.png %s/static/src/img/' % (self.path))
         return True
 
     def create_index_html_file(self):
