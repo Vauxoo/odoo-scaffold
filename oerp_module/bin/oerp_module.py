@@ -152,6 +152,8 @@ class oerp_module:
         """
         self.create_init_files()
         self.create_openerp_file()
+        self.add_icon_file()
+        self.create_index_html_file()
 
     def create_init_files(self):
         """
@@ -193,6 +195,20 @@ class oerp_module:
         print '... Create the openerp descriptive file'
         os.system('echo """%s""" | cat - > %s' % (
             self.license_msg + content, '%s/__openerp__.py' % (self.path,)))
+
+    def add_icon_file(self):
+        """
+        Add the icon.png file to the module.
+        """
+        os.system('cp src/icon.png %s/%s' % (self.path, strc_dir))
+
+    def create_index_html_file(self):
+        """
+        Touch to create a clean index.html file in the
+        static/description/index.html
+        """
+        os.system('touch %s/static/description/index.html' % (self.path,))
+        
 
     def create_py_files(self):
         """
