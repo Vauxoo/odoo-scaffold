@@ -218,7 +218,7 @@ class oerp_module(object):
         print 'Create new module local branch'
         os.system('cp %s %s -r' % (
             self.parent_repo['local'], self.branch_name))
-        os.system('echo \'\' | cat - > %s/.bzr/branch/branch.conf'% (self.path,))
+        os.system('echo \'\' | cat - > %s/.bzr/branch/branch.conf'% (self.branch_name,))
 
         print 'Create new module cloud branch'
         os.system('bzr branch lp:%s/%s/%s lp:%s/%s/%s' % (
@@ -411,6 +411,9 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         '-b', '--branch-create', action='store_true',
         help='create a branch copy in the parent repo that will holds the new'
              ' module')
+    parser.add_argument(
+        '-a', '--append-model-file', action='store_true',
+        help='append a file to the module')
 
     parser.set_defaults(
         oerp_version='7.0',
@@ -438,8 +441,11 @@ def main():
         module.create_main_directory()
         module.create_directories()
         module.create_base_files()
+
+    if args.append_model_file:
         module.create_py_files()
-        module.branch_changes_apply()
+
+        #~ module.branch_changes_apply()
 
 if __name__ == '__main__':
     main()
