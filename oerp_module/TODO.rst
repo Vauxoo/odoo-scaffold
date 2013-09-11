@@ -25,3 +25,5 @@ TODO
 - hacer un decorador para manejar que los paramtros que ya fueron validados
   en argsparse function () vuelvan a revisarse antes de ejectuar la funcion
   de inicializacion del objeto oerp_module.
+- agregar un template para el archivo de index.html
+- agregar template para archivos dentro de /doc
