@@ -16,9 +16,6 @@ TODO
   impresa en las licencias.
 - manejar en un archivo externo xml una lista de repositorios con la 
   información de los repositorios configurados en la herramienta.
-- agregar una opcion de cli -a --append que permita agregar archivos tomando
-  en cuenta un template base para modelos, wizards, vistas y workflows... para
-  todo en realidad.
 - crear opciones de listado que permitan --show la información de los 
   repositorios configurados y de los developers, asi como tambien una funcion
   para modificar uno o crear uno nuevo directamente de la linea de comandos.
