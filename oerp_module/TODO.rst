@@ -18,7 +18,25 @@ TODO
   información de los repositorios configurados en la herramienta.
 - crear opciones de listado que permitan --show la información de los 
   repositorios configurados y de los developers, asi como tambien una funcion
-  para modificar uno o crear uno nuevo directamente de la linea de comandos.
+  para modificar uno o crear uno nuevo directamente de la linea de comandos::
+
+    --show-repos
+    --show-developers
+
+- cambiar estructura del branch para que se pueda utilizar oerp_module como un
+  modulo de python::
+
+    oerp_module/
+        bin/
+            oerp_module/ (main)
+        README.rst
+        oerp_module/
+            __ini__.py
+            oerp_module.py
+        src/
+            src/img
+            src/template
+
 - hacer un decorador para manejar que los paramtros que ya fueron validados
   en argsparse function () vuelvan a revisarse antes de ejectuar la funcion
   de inicializacion del objeto oerp_module.
