@@ -51,32 +51,6 @@ class repository(object):
         self.local_path = local_path
         self.cloud_url = cloud_url
 
-repo_data = {
-    'addons-vauxoo': {
-        'name': 'addons-vauxoo',
-        'serie': '7.0',
-        'group': '~vauxoo',
-        'local': '~/bzr_projects/addons_vauxoo_branches/7.0-addons-vauxoo',
-    },
-    'vauxoo-private': {
-        'name': 'vauxoo-private',
-        'serie': False,
-        'group': '~vauxoo-private',
-        'local': '~/bzr_projects/vauxoo-private',
-    },
-    'ovl70': {
-        'name': 'openerp-venezuela-localization',
-        'serie': '7.0',
-        'group': '~vauxoo',
-        'local': '~/bzr_projects/_VE/ovl_branches/ovl70',
-    },
-    'junk': {
-        'name': '~katherine-zaoral-7/+junk',
-        'serie': False,
-        'group': '~katherine-zaoral-7',
-        'local': '~/bzr_projects/+junk/katherine-zaoral-7',
-    },
-}
 _oerp_version_list = ['6.0', '6.1', '7.0']
 
 
@@ -231,16 +205,16 @@ class oerp_module(object):
             raise Exception("Bad parameters. '%s' Its not a valid openerp "
                             "version" % (version,))
 
-        if parent_repo in repo_data:
+        if parent_repo in self.config.repositories:
             self.branch_name = '%s-dev-%s-%s' % (version, name, branch_suffix)
-            self.parent_repo = repo_data[parent_repo].copy()
-            self.repo_name = repo_data[parent_repo]['name']
-            self.repo_group = repo_data[parent_repo]['group']
-            self.repo_serie = repo_data[parent_repo]['serie']
+            self.parent_repo = self.config.repositories[parent_repo].copy()
+            self.repo_name = self.config.repositories[parent_repo]['name']
+            self.repo_group = self.config.repositories[parent_repo]['group']
+            self.repo_serie = self.config.repositories[parent_repo]['serie']
         else:
             raise Exception("Bad paramenters. The repository %s does not exist"
                             " in the current script configuration. Please add"
-                            " the repo to the repo_data dictonary." % (
+                            " the repo to the repository data." % (
                             parent_repo,))
 
         self.path = '%s/%s' % (self.branch_name, self.directory)
@@ -248,6 +222,7 @@ class oerp_module(object):
         self.license_msg = self.set_license_msg(module_developers,
                                                 module_planners,
                                                 module_auditors)
+        self.config = oerp_config()
         return None
 
     def create_branch(self):
