@@ -4,6 +4,18 @@ import sys
 
 #~ config repos
 
+class repository(object)
+
+    def __init__(self):
+        """
+        Inicializate the repository object with the corresponding data
+        """
+        self.name = str()
+        self.serie = str()
+        self.group = str()
+        self.local_path = str()
+        self.cloud_utl = str()
+
 repo_data = {
     'addons-vauxoo': {
         'name': 'addons-vauxoo',
