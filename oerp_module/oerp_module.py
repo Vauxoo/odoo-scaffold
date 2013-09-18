@@ -6,15 +6,21 @@ import sys
 
 class repository(object)
 
-    def __init__(self):
+    def __init__(self, name, serie, group, local_path, cloud_url):
         """
         Inicializate the repository object with the corresponding data
+        @param name: name of the repository given for the user.
+        @param serie: number of the project serie (the branch of the project
+                      to push).
+        @param group: launchpad group with permissions to push to the branch.
+        @param local_path: the path of your local copy of the repository.
+        @param cloud_url: the path of your local copy of the repository.
         """
-        self.name = str()
-        self.serie = str()
-        self.group = str()
-        self.local_path = str()
-        self.cloud_utl = str()
+        self.name = name
+        self.serie = serie
+        self.group = group
+        self.local_path = local_path
+        self.cloud_url = cloud_url
 
 repo_data = {
     'addons-vauxoo': {
