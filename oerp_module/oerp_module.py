@@ -2,7 +2,7 @@
 import os
 import sys
 
-class oerp_config(object)
+class oerp_config(object):
 
     def __init__(self):
         """
