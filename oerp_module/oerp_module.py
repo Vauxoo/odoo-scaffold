@@ -7,7 +7,7 @@ class oerp_config(object):
     def __init__(self):
         """
         """
-        self.repositories = [
+        self.repositories = {
             'addons-vauxoo': repository(
                 name='addons-vauxoo',
                 serie='7.0',
@@ -28,7 +28,7 @@ class oerp_config(object):
                 serie=False,
                 group='~katherine-zaoral-7',
                 local_path='~/bzr_projects/+junk/katherine-zaoral-7'),
-        ]
+        }
 
 
 #~ config repos
