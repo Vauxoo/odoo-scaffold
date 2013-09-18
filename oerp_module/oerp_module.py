@@ -2,6 +2,35 @@
 import os
 import sys
 
+class oerp_config(object)
+
+    def __init__(self):
+        """
+        """
+        self.repositories = [
+            'addons-vauxoo': repository(
+                name='addons-vauxoo',
+                serie='7.0',
+                group='~vauxoo',
+                local_path='~/bzr_projects/addons_vauxoo_branches/7.0-addons-vauxoo'),
+            'vauxoo-private': repository(
+                name='vauxoo-private',
+                serie=False,
+                group='~vauxoo-private',
+                local_path='~/bzr_projects/vauxoo-private'),
+            'ovl70': repository(
+                name='openerp-venezuela-localization',
+                serie='7.0',
+                group='~vauxoo',
+                local_path='~/bzr_projects/_VE/ovl_branches/ovl70'),
+            'junk': repository(
+                name='~katherine-zaoral-7/+junk',
+                serie=False,
+                group='~katherine-zaoral-7',
+                local_path='~/bzr_projects/+junk/katherine-zaoral-7'),
+        ]
+
+
 #~ config repos
 
 class repository(object)
