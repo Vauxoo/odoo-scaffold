@@ -33,7 +33,7 @@ class oerp_config(object):
 
 #~ config repos
 
-class repository(object)
+class repository(object):
 
     def __init__(self, name, serie, group, local_path, cloud_url):
         """
