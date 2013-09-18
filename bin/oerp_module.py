@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import oerp_module
 import argparse
 
 def argument_parser():
