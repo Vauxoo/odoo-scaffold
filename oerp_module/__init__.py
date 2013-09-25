@@ -1,2 +1,2 @@
-import oerp_module
+import module
 import config
