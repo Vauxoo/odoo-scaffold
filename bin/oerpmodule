@@ -2,9 +2,6 @@
 import oerp_module
 import argparse
 
-_oerp_version_list = ['6.0', '6.1', '7.0']
-
-
 def argument_parser():
     """
     This function create the help command line and manage and filter the
@@ -42,7 +39,7 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         '-ov', '--oerp-version',
         metavar='VERSION',
         type=str,
-        choices=_oerp_version_list,
+        choices=oerp_module._oerp_version_list,
         help='Openerp version number')
     parser.add_argument(
         '-c', '--create-structure', action='store_true',
