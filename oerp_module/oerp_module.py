@@ -1,55 +1,7 @@
 #!/usr/bin/python
 import os
 import sys
-
-class oerp_config(object):
-
-    def __init__(self):
-        """
-        """
-        self.repositories = {
-            'addons-vauxoo': repository(
-                name='addons-vauxoo',
-                serie='7.0',
-                group='~vauxoo',
-                local_path='~/bzr_projects/addons_vauxoo_branches/7.0-addons-vauxoo'),
-            'vauxoo-private': repository(
-                name='vauxoo-private',
-                serie=False,
-                group='~vauxoo-private',
-                local_path='~/bzr_projects/vauxoo-private'),
-            'ovl70': repository(
-                name='openerp-venezuela-localization',
-                serie='7.0',
-                group='~vauxoo',
-                local_path='~/bzr_projects/_VE/ovl_branches/ovl70'),
-            'junk': repository(
-                name='~katherine-zaoral-7/+junk',
-                serie=False,
-                group='~katherine-zaoral-7',
-                local_path='~/bzr_projects/+junk/katherine-zaoral-7'),
-        }
-
-
-#~ config repos
-
-class repository(object):
-
-    def __init__(self, name, serie, group, local_path, cloud_url):
-        """
-        Inicializate the repository object with the corresponding data
-        @param name: name of the repository given for the user.
-        @param serie: number of the project serie (the branch of the project
-                      to push).
-        @param group: launchpad group with permissions to push to the branch.
-        @param local_path: the path of your local copy of the repository.
-        @param cloud_url: the path of your local copy of the repository.
-        """
-        self.name = name
-        self.serie = serie
-        self.group = group
-        self.local_path = local_path
-        self.cloud_url = cloud_url
+import config
 
 _oerp_version_list = ['6.0', '6.1', '7.0']
 
@@ -222,7 +174,7 @@ class oerp_module(object):
         self.license_msg = self.set_license_msg(module_developers,
                                                 module_planners,
                                                 module_auditors)
-        self.config = oerp_config()
+        self.config = config()
         return None
 
     def create_branch(self):
