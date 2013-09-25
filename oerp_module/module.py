@@ -6,7 +6,7 @@ import config
 _oerp_version_list = ['6.0', '6.1', '7.0']
 
 
-class oerp_template(object):
+class Template(object):
 
     """
     Contains the files templates
@@ -170,7 +170,7 @@ class Module(object):
                             parent_repo,))
 
         self.path = '%s/%s' % (self.branch_name, self.directory)
-        self.template = oerp_template()
+        self.template = Template()
         self.license_msg = self.set_license_msg(module_developers,
                                                 module_planners,
                                                 module_auditors)
