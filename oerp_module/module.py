@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os
 import sys
-import config
+from config import *
 
 _oerp_version_list = ['6.0', '6.1', '7.0']
 
@@ -157,6 +157,7 @@ class Module(object):
             raise Exception("Bad parameters. '%s' Its not a valid openerp "
                             "version" % (version,))
 
+        self.config = Config()
         if parent_repo in self.config.repositories:
             self.branch_name = '%s-dev-%s-%s' % (version, name, branch_suffix)
             self.parent_repo = self.config.repositories[parent_repo].copy()
@@ -174,7 +175,6 @@ class Module(object):
         self.license_msg = self.set_license_msg(module_developers,
                                                 module_planners,
                                                 module_auditors)
-        self.config = Config()
         return None
 
     def create_branch(self):
