@@ -2,6 +2,9 @@
 import oerp_module
 import argparse
 
+_oerp_version_list = ['6.0', '6.1', '7.0']
+
+
 def argument_parser():
     """
     This function create the help command line and manage and filter the
@@ -33,8 +36,8 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         '-r', '--parent_repo',
         metavar='PARENT_REPO',
         type=str,
-        help='name of parent repo',
-        choices=repo_data.keys())
+        help='name of parent repo')
+        #~ choices=repo_data.keys())
     parser.add_argument(
         '-ov', '--oerp-version',
         metavar='VERSION',
