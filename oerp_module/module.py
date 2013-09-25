@@ -111,7 +111,7 @@ class %s_wizard(osv.TransientModel):
 }"""
 
 
-class oerp_module(object):
+class module(object):
 
     directory_list = [
         'model',
