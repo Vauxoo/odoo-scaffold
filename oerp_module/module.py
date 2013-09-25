@@ -160,10 +160,10 @@ class Module(object):
         self.config = Config()
         if parent_repo in self.config.repositories:
             self.branch_name = '%s-dev-%s-%s' % (version, name, branch_suffix)
-            self.parent_repo = self.config.repositories[parent_repo].copy()
-            self.repo_name = self.config.repositories[parent_repo]['name']
-            self.repo_group = self.config.repositories[parent_repo]['group']
-            self.repo_serie = self.config.repositories[parent_repo]['serie']
+            self.parent_repo = self.config.repositories[parent_repo]
+            self.repo_name = self.parent_repo.name
+            self.repo_group = self.parent_repo.group
+            self.repo_serie = self.parent_repo.serie
         else:
             raise Exception("Bad paramenters. The repository %s does not exist"
                             " in the current script configuration. Please add"
@@ -193,7 +193,7 @@ class Module(object):
 
         print 'Create new module local branch'
         os.system('cp %s %s -r' % (
-            self.parent_repo['local'], self.branch_name))
+            self.parent_repo.local_path, self.branch_name))
         os.system('echo \'\' | cat - > %s/.bzr/branch/branch.conf'% (self.branch_name,))
 
         print 'Create new module cloud branch'
