@@ -174,7 +174,7 @@ class Module(object):
         self.license_msg = self.set_license_msg(module_developers,
                                                 module_planners,
                                                 module_auditors)
-        self.config = config()
+        self.config = Config()
         return None
 
     def create_branch(self):

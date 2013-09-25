@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 
-class repository(object):
+class Repository(object):
 
     def __init__(self, name, serie, group, local_path, cloud_url=False):
         """
@@ -20,7 +20,7 @@ class repository(object):
         self.cloud_url = cloud_url
 
 
-class config(object):
+class Config(object):
 
     def __init__(self):
         """
@@ -28,22 +28,22 @@ class config(object):
         repositories
         """
         self.repositories = {
-            'addons-vauxoo': repository(
+            'addons-vauxoo': Repository(
                 name='addons-vauxoo',
                 serie='7.0',
                 group='~vauxoo',
                 local_path='~/bzr_projects/addons_vauxoo_branches/7.0-addons-vauxoo'),
-            'vauxoo-private': repository(
+            'vauxoo-private': Repository(
                 name='vauxoo-private',
                 serie=False,
                 group='~vauxoo-private',
                 local_path='~/bzr_projects/vauxoo-private'),
-            'ovl70': repository(
+            'ovl70': Repository(
                 name='openerp-venezuela-localization',
                 serie='7.0',
                 group='~vauxoo',
                 local_path='~/bzr_projects/_VE/ovl_branches/ovl70'),
-            'junk': repository(
+            'junk': Repository(
                 name='~katherine-zaoral-7/+junk',
                 serie=False,
                 group='~katherine-zaoral-7',
