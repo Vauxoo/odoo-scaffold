@@ -24,6 +24,8 @@ class config(object):
 
     def __init__(self):
         """
+        Create a config Object from openerp module. it set by default the
+        repositories
         """
         self.repositories = {
             'addons-vauxoo': repository(
