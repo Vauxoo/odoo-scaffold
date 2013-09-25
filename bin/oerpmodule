@@ -97,7 +97,7 @@ def main():
     for (parameter, value) in args.__dict__.iteritems():
         print '%s = %s' % (parameter, value)
 
-    module = oerp_module(
+    module = oerp_module.Module(
         args.name, args.branch_suffix, args.parent_repo, args.oerp_version,
         args.module_developers, args.module_planners, args.module_auditors)
 
