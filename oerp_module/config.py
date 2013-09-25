@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+import os
 
 class Repository(object):
 
@@ -19,6 +19,11 @@ class Repository(object):
         self.local_path = local_path
         self.cloud_url = cloud_url
 
+        if not os.path.exists(local_path):
+            print ('The %s repository can be used because the local path'
+                   ' given really do no exist.' % (name, ))
+            exit()
+
 
 class Config(object):
 
@@ -32,20 +37,20 @@ class Config(object):
                 name='addons-vauxoo',
                 serie='7.0',
                 group='~vauxoo',
-                local_path='~/bzr_projects/addons_vauxoo_branches/7.0-addons-vauxoo'),
+                local_path='/home/openerp/bzr_projects/addons-vauxoo/7.0'),
             'vauxoo-private': Repository(
                 name='vauxoo-private',
                 serie=False,
                 group='~vauxoo-private',
-                local_path='~/bzr_projects/vauxoo-private'),
+                local_path='/home/openerp/bzr_projects/vauxoo-private'),
             'ovl70': Repository(
                 name='openerp-venezuela-localization',
                 serie='7.0',
                 group='~vauxoo',
-                local_path='~/bzr_projects/_VE/ovl_branches/ovl70'),
+                local_path='/home/openerp/bzr_projects/_VE/ovl_branches/ovl70'),
             'junk': Repository(
-                name='~katherine-zaoral-7/+junk',
+                name='~kathy-zaoral/+junk',
                 serie=False,
-                group='~katherine-zaoral-7',
-                local_path='~/bzr_projects/+junk/katherine-zaoral-7'),
+                group='~kathy-zaoral',
+                local_path='/home/openerp/bzr_projects/+junk/kathy-zaoral'),
         }
