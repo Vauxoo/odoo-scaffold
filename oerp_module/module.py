@@ -98,7 +98,7 @@ class %s_wizard(osv.TransientModel):
     'name': '%s',
     'version': '1.0',
     'author': 'Vauxoo',
-    'website': 'http://www.openerp.com.ve',
+    'website': 'http://www.vauxoo.com/',
     'category': '',
     'description': '''
 ''',
