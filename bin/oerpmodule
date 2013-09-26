@@ -17,9 +17,10 @@ Coded by Katherine Zaoral <kathy@vauxoo.com>.
 Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
-        'name',
+        '-n', '--module-name',
         metavar='MODULE_NAME',
         type=str,
+        required=True,
         help='name of the module to create.')
     parser.add_argument(
         '-s', '--branch-suffix',
@@ -98,7 +99,7 @@ def main():
         print '%s = %s' % (parameter, value)
 
     module = oerp_module.Module(
-        args.name, args.branch_suffix, args.parent_repo, args.oerp_version,
+        args.module_name, args.branch_suffix, args.parent_repo, args.oerp_version,
         args.module_developers, args.module_planners, args.module_auditors)
 
     if args.branch_create:
