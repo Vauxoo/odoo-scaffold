@@ -34,7 +34,10 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         metavar='PARENT_REPO',
         type=str,
         help=('The name of repository from will be create the new module. To '
-              'look the repository list use the --repositories option.'))
+              'look the repository list use the --list-repositories option.'))
+    parser.add_argument(
+        '-l', '--list-repositories', action='store_true',
+        help='List the configurate repositories.')
     parser.add_argument(
         '-ov', '--oerp-version',
         metavar='VERSION',
@@ -96,6 +99,12 @@ def main():
     print'\n... Configuration of Parameters Set'
     for (parameter, value) in args.__dict__.iteritems():
         print '%s = %s' % (parameter, value)
+
+    config = oerp_module.Config()
+
+    if args.list_repositories:
+        config.print_repositories()
+        exit()
 
     module = oerp_module.Module(
         args.module_name, args.branch_suffix, args.parent_repo, args.oerp_version,

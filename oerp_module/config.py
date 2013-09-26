@@ -1,5 +1,7 @@
 #!/usr/bin/python
 import os
+import pprint
+
 
 class Repository(object):
 
@@ -54,3 +56,14 @@ class Config(object):
                 group='~kathy-zaoral',
                 local_path='/home/openerp/bzr_projects/+junk/kathy-zaoral'),
         }
+
+    def print_repositories(self):
+        """
+        Print the data of the repositories
+        """
+        print '\nCurrent configured repositories:'
+        for (repo, values) in self.repositories.iteritems():
+            print '\n%s' % (repo,)
+            pprint.pprint(values.__dict__)
+        print '\n'
+        return True
