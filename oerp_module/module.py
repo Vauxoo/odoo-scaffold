@@ -135,7 +135,8 @@ class Module(object):
         'static/src/img']
 
     def __init__(self, name, branch_suffix, parent_repo, version,
-                 module_developers, module_planners, module_auditors):
+                 module_developers, module_planners, module_auditors,
+                 branch_create, folder=None):
         """
         iniciialization of the module
         @param name: new module name
@@ -170,7 +171,10 @@ class Module(object):
                             " the repo to the repository data." % (
                             parent_repo,))
 
-        self.path = '%s/%s' % (self.branch_name, self.directory)
+        self.path = branch_create and '%s/%s' % (
+            self.branch_name, self.directory) or '%s/%s' % (folder,
+                self.directory)
+
         self.template = Template()
         self.license_msg = self.set_license_msg(module_developers,
                                                 module_planners,

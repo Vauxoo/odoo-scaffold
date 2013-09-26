@@ -49,6 +49,12 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         '-c', '--create-structure', action='store_true',
         help='inicializate module / create new directory with basic files')
     parser.add_argument(
+        '-f', '--destionation-folder',
+        #~ action='store_true',
+        metavar='DIR',
+        type=str,
+        help='name of the folder where to put the module')
+    parser.add_argument(
         '-b', '--branch-create', action='store_true',
         help='create a branch copy in the parent repo that will holds the new'
              ' module')
@@ -108,7 +114,8 @@ def main():
 
     module = oerp_module.Module(
         args.module_name, args.branch_suffix, args.parent_repo, args.oerp_version,
-        args.module_developers, args.module_planners, args.module_auditors)
+        args.module_developers, args.module_planners, args.module_auditors,
+        args.branch_create, folder=args.destionation_folder)
 
     if args.branch_create:
         module.create_branch()
