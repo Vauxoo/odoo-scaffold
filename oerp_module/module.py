@@ -149,7 +149,7 @@ class Module(object):
         print '\n... Checking Script Parameters'
         self.name = name
         self.directory = name
-        self.branch_suffix = branch_suffix
+        self.branch_suffix = branch_suffix or ''
 
         if version in _oerp_version_list:
             self.version = version
