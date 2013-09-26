@@ -2,7 +2,7 @@
 import oerp_module
 import argparse
 
-def argument_parser():
+def argument_parser(config):
     """
     This function create the help command line and manage and filter the
     parameters of this program (default values, choices values)
@@ -33,6 +33,7 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         '-r', '--parent_repo',
         metavar='PARENT_REPO',
         type=str,
+        choices=config.get_repositories_names(),
         help=('The name of repository from will be create the new module. To '
               'look the repository list use the --list-repositories option.'))
     parser.add_argument(
@@ -94,13 +95,12 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
 
 def main():
 
-    args = argument_parser()
+    config = oerp_module.Config()
+    args = argument_parser(config)
 
     print'\n... Configuration of Parameters Set'
     for (parameter, value) in args.__dict__.iteritems():
         print '%s = %s' % (parameter, value)
-
-    config = oerp_module.Config()
 
     if args.list_repositories:
         config.print_repositories()

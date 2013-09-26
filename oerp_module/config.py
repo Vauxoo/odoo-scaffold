@@ -67,3 +67,9 @@ class Config(object):
             pprint.pprint(values.__dict__)
         print '\n'
         return True
+
+    def get_repositories_names(self):
+        """
+        Reutrn a list of string the the current saved repositories
+        """
+        return self.repositories.keys()
