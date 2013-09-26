@@ -33,8 +33,8 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         '-r', '--parent_repo',
         metavar='PARENT_REPO',
         type=str,
-        help='name of parent repo')
-        #~ choices=repo_data.keys())
+        help=('The name of repository from will be create the new module. To '
+              'look the repository list use the --repositories option.'))
     parser.add_argument(
         '-ov', '--oerp-version',
         metavar='VERSION',
