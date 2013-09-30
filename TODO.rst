@@ -1,6 +1,7 @@
 TODO
 ====
 
+- Agregar al descriptir openerp qweb, js y ccs.
 - Mejorar la documentación del modulo porque no se entiende a buenas y primeras
   lo que devuelve.
 - falta crear un template con una vista generica para ponerla como parte del
