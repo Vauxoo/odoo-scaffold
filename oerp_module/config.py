@@ -20,11 +20,18 @@ class Repository(object):
         self.group = group
         self.local_path = local_path
         self.cloud_url = cloud_url
+        # self.check_repo_local_path()
 
-        if not os.path.exists(local_path):
+    def check_repo_local_path(self):
+        """
+        Check that the local repo given it really exist
+        @return: True if exist, False if not exist.
+        """
+        if not os.path.exists(self.local_path):
             print ('The %s repository can be used because the local path'
                    ' given really do no exist.' % (name, ))
-            exit()
+            return False
+        return True
 
 
 class Config(object):
