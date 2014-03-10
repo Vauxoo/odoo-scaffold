@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import oerp_module
 import argparse
+import argcomplete
 
 def argument_parser(config):
     """
@@ -97,6 +98,7 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         parent_repo='addons-vauxoo'
     )
 
+    argcomplete.autocomplete(parser)
     return parser.parse_args()
 
 def main():
