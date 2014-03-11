@@ -25,44 +25,9 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
     branch_group = parser.add_argument_group('Branch options', (
         'Options needed to configure the new branch.'))
 
-    global_group.add_argument(
-        '-n', '--module-name',
-        metavar='MODULE_NAME',
-        type=str,
-        required=True,
-        help='name of the module to create.')
-    branch_group.add_argument(
-        '-s', '--branch-suffix',
-        metavar='DEVELOPER_ACRONYM',
-        type=str,
-        help=str('Generally developer acronym name. It use when creating the'
-                 ' branch for identify the team user owner in a simply way,'
-                 ' It use is recommended.'))
-    branch_group.add_argument(
-        '-r', '--parent_repo',
-        metavar='PARENT_REPO',
-        type=str,
-        choices=config.get_repositories_names(),
-        help=('The name of repository from will be create the new module. To '
-              'look the repository list use the --list-repositories option.'))
-    parser.add_argument(
-        '-l', '--list-repositories', action='store_true',
-        help='List the configurate repositories.')
-    parser.add_argument(
-        '-ov', '--oerp-version',
-        metavar='VERSION',
-        type=str,
-        choices=oerp_module._oerp_version_list,
-        help='Openerp version number')
     action_group.add_argument(
         '-c', '--create-structure', action='store_true',
         help='inicializate module / create new directory with basic files')
-    parser.add_argument(
-        '-f', '--destionation-folder',
-        #~ action='store_true',
-        metavar='DIR',
-        type=str,
-        help='name of the folder where to put the module')
     action_group.add_argument(
         '-b', '--branch-create', action='store_true',
         help='create a branch copy in the parent repo that will holds the new'
@@ -73,6 +38,13 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         type=str,
         help='append a file to the module',
         choices=['model', 'wizard'])
+
+    global_group.add_argument(
+        '-n', '--module-name',
+        metavar='MODULE_NAME',
+        type=str,
+        required=True,
+        help='name of the module to create.')
     global_group.add_argument(
         '-d', '--module-developers',
         metavar='DEVELOPERS INFO',
@@ -100,6 +72,37 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
                  ' <auditor@mail.com>, Second Auditor Name'
                  ' <auditorX@mail.com>\''),
         required=True)
+
+    branch_group.add_argument(
+        '-s', '--branch-suffix',
+        metavar='DEVELOPER_ACRONYM',
+        type=str,
+        help=str('Generally developer acronym name. It use when creating the'
+                 ' branch for identify the team user owner in a simply way,'
+                 ' It use is recommended.'))
+    branch_group.add_argument(
+        '-r', '--parent_repo',
+        metavar='PARENT_REPO',
+        type=str,
+        choices=config.get_repositories_names(),
+        help=('The name of repository from will be create the new module. To '
+              'look the repository list use the --list-repositories option.'))
+
+    parser.add_argument(
+        '-l', '--list-repositories', action='store_true',
+        help='List the configurate repositories.')
+    parser.add_argument(
+        '-ov', '--oerp-version',
+        metavar='VERSION',
+        type=str,
+        choices=oerp_module._oerp_version_list,
+        help='Openerp version number')
+    parser.add_argument(
+        '-f', '--destionation-folder',
+        #~ action='store_true',
+        metavar='DIR',
+        type=str,
+        help='name of the folder where to put the module')
 
     parser.set_defaults(
         oerp_version='7.0',
