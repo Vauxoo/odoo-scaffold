@@ -17,20 +17,28 @@ Development by Vauxoo Team (lp:~vauxoo)
 Coded by Katherine Zaoral <kathy@vauxoo.com>.
 Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument(
+
+    action_group = parser.add_argument_group('Commands', (
+        'Actions that can be done with this script.'))
+    global_group = parser.add_argument_group('Global required options', (
+        'Options used in different actions.'))
+    branch_group = parser.add_argument_group('Branch options', (
+        'Options needed to configure the new branch.'))
+
+    global_group.add_argument(
         '-n', '--module-name',
         metavar='MODULE_NAME',
         type=str,
         required=True,
         help='name of the module to create.')
-    parser.add_argument(
+    branch_group.add_argument(
         '-s', '--branch-suffix',
         metavar='DEVELOPER_ACRONYM',
         type=str,
         help=str('Generally developer acronym name. It use when creating the'
                  ' branch for identify the team user owner in a simply way,'
                  ' It use is recommended.'))
-    parser.add_argument(
+    branch_group.add_argument(
         '-r', '--parent_repo',
         metavar='PARENT_REPO',
         type=str,
@@ -46,7 +54,7 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         type=str,
         choices=oerp_module._oerp_version_list,
         help='Openerp version number')
-    parser.add_argument(
+    action_group.add_argument(
         '-c', '--create-structure', action='store_true',
         help='inicializate module / create new directory with basic files')
     parser.add_argument(
@@ -55,17 +63,17 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         metavar='DIR',
         type=str,
         help='name of the folder where to put the module')
-    parser.add_argument(
+    action_group.add_argument(
         '-b', '--branch-create', action='store_true',
         help='create a branch copy in the parent repo that will holds the new'
              ' module')
-    parser.add_argument(
+    action_group.add_argument(
         '-a', '--append-file',
         metavar='TYPE_OF_FILE',
         type=str,
         help='append a file to the module',
         choices=['model', 'wizard'])
-    parser.add_argument(
+    global_group.add_argument(
         '-d', '--module-developers',
         metavar='DEVELOPERS INFO',
         type=str,
@@ -74,7 +82,7 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
                  ' <developer@mail.com>, Second Developer Name'
                  ' <developerX@mail.com>\''),
         required=True)
-    parser.add_argument(
+    global_group.add_argument(
         '-p', '--module-planners',
         metavar='PLANNERS INFO',
         type=str,
@@ -83,7 +91,7 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
                  ' <planner@mail.com>, Second Planner Name'
                  ' <plannerX@mail.com>\''),
         required=True)
-    parser.add_argument(
+    global_group.add_argument(
         '-t', '--module-auditors',
         metavar='AUDITORS INFO',
         type=str,
