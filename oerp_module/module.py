@@ -106,6 +106,9 @@ class %s_wizard(osv.TransientModel):
     'data': [],
     'demo': [],
     'test': [],
+    'qweb': [],
+    'js': [],
+    'css': [],
     'active': False,
     'installable': True,
 }"""
