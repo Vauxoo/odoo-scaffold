@@ -46,22 +46,22 @@ class Config(object):
                 name='addons-vauxoo',
                 serie='7.0',
                 group='~vauxoo',
-                local_path='/home/openerp/bzr_projects/addons-vauxoo/7.0'),
+                local_path='/home/kathy/bzr_projects/addons_vauxoo/7.0'),
             'vauxoo-private': Repository(
                 name='vauxoo-private',
                 serie=False,
                 group='~vauxoo-private',
-                local_path='/home/openerp/bzr_projects/vauxoo-private'),
+                local_path='/home/kathy/bzr_projects/vauxoo_private'),
             'ovl70': Repository(
                 name='openerp-venezuela-localization',
                 serie='7.0',
                 group='~vauxoo',
-                local_path='/home/openerp/bzr_projects/_VE/ovl_branches/ovl70'),
+                local_path='/home/kathy/bzr_projects/_VE/ovl_branches/ovl70'),
             'junk': Repository(
-                name='~kathy-zaoral/+junk',
-                serie=False,
+                name='+junk',
+                serie='oerpmodule_test',
                 group='~kathy-zaoral',
-                local_path='/home/openerp/bzr_projects/+junk/kathy-zaoral'),
+                local_path='/home/kathy/bzr_projects/+junk/kathy-zaoral/oerpmodule_test'),
         }
 
     def print_repositories(self):
