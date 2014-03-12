@@ -61,6 +61,12 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
                  ' <auditor@mail.com>, Second Auditor Name'
                  ' <auditorX@mail.com>\''),
         required=True)
+    create_parser.add_argument(
+        '-dir', '--destination-folder',
+        metavar='DIR',
+        type=str,
+        default=os.getcwd(),
+        help='name of the folder where to put the module')
 
 
 
@@ -142,7 +148,7 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         choices=['model', 'wizard'],
         help='The type of file you want to append.')
     append_parser.add_argument(
-        '-dir', '--destionation-folder',
+        '-dir', '--destination-folder',
         metavar='DIR',
         type=str,
         default=os.getcwd(),
@@ -193,7 +199,7 @@ def main():
             args.module_name, args.branch_suffix, args.parent_repo,
             args.oerp_version,
             args.module_developers, args.module_planners, args.module_auditors,
-            args.branch_create, folder=args.destionation_folder)
+            args.branch_create, folder=args.destination_folder)
 
         if args.action == 'create':
             args.branch_create and module.create_branch()
