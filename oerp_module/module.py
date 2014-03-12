@@ -331,23 +331,25 @@ class Branch(object):
             self.parent_repo.local_path, self.path))
         os.system('echo \'\' | cat - > %s/.bzr/branch/branch.conf'% (self.path,))
 
+        new_cloud_branch_name = \
+                self.repo_group + '/' + self.repo_name \
+                + '/' + self.branch_name))
+
         print '... Create new module cloud branch'
-        os.system('bzr branch lp:%s/%s/%s lp:%s/%s/%s --quiet' % (
+        os.system('bzr branch lp:%s/%s/%s lp:%s --quiet' % (
             self.repo_group, self.repo_name, self.repo_serie,
-            self.repo_group, self.repo_name, self.branch_name))
+            new_cloud_branch_name))
 
         print '... Linking local and cloud branchs'
-        os.system('cd %s && bzr pull lp:%s/%s/%s --remember --quiet' % (
-            self.path, self.repo_group, self.repo_name,
-            self.branch_name))
+        os.system('cd %s && bzr pull lp:%s --remember --quiet' % (
+            self.path, new_cloud_branch_name ))
 
         print '... Add init revision for the beginning of the new module dev'
         os.system('cd %s && bzr ci -m "%s" --unchanged --quiet' % (
             self.path,
             '[INIT] new branch for development of %s module.' % (self.module.name,)))
-        os.system('cd %s && bzr push lp:%s/%s/%s --remember' % (
-            self.path, self.repo_group, self.repo_name,
-            self.branch_name))
+        os.system('cd %s && bzr push lp:%s --remember' % (
+            self.path, new_cloud_branch_name))
         return True
 
     def branch_changes_apply(self):
