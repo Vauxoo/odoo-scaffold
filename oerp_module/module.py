@@ -299,9 +299,10 @@ class Branch(object):
         self.branch_suffix = branch_suffix or ''
         self.parent_repo = self.config.repositories[parent_repo]
 
-        # TODO:fix this. when the suffix is not descripbed then do not add it.
-        self.branch_name = '%s-dev-%s-%s' % (
-            self.version, self.module.name, self.branch_suffix)
+        self.branch_name = '-'.join(
+            self.branch_suffix and 
+            [self.version, self.module.name, 'dev', self.branch_suffix]
+            or [self.version, self.module.name, 'dev'])
 
         self.path = '%s/%s' % (folder, self.branch_name)
         self.module.path = '%s/%s' % (self.path, self.module.directory) 
