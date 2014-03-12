@@ -1,0 +1,10 @@
+*.pyc
+*.swp
+*.vim
+dev_*
+build/
+doc/build
+doc/html
+doc/doctrees
+dist/
+MANIFEST
