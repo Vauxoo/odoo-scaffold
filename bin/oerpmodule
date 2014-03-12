@@ -5,6 +5,54 @@ import argcomplete
 import os
 
 
+def add_common_options(subparser):
+    """
+    I recive a parser object that repersent a subparser in this script to add
+    it the common options needed. The subparser that share this common options
+    are [create, append, branch] subparsers. The common options are:
+    [module_name, module_developers, module_planners, module_auditors, dir].
+    @return: the subparser object with the common arguments added.
+    """
+    subparser.add_argument(
+        'module_name',
+        metavar='MODULE_NAME',
+        type=str,
+        help='name of the module to create.')
+    subparser.add_argument(
+        '-d', '--module-developers',
+        metavar='DEVELOPERS_INFO',
+        type=str,
+        help=str('A string with the module developers information. The format'
+                 ' of this string is \'First Developer Name'
+                 ' <developer@mail.com>, Second Developer Name'
+                 ' <developerX@mail.com>\''),
+        required=True)
+    subparser.add_argument(
+        '-p', '--module-planners',
+        metavar='PLANNERS_INFO',
+        type=str,
+        help=str('A string with the module planners information. The format'
+                 ' of this string is \'First Planner Name'
+                 ' <planner@mail.com>, Second Planner Name'
+                 ' <plannerX@mail.com>\''),
+        required=True)
+    subparser.add_argument(
+        '-t', '--module-auditors',
+        metavar='AUDITORS_INFO',
+        type=str,
+        help=str('A string with the module auditors information. The format'
+                 ' of this string is \'First Auditor Name'
+                 ' <auditor@mail.com>, Second Auditor Name'
+                 ' <auditorX@mail.com>\''),
+        required=True)
+    subparser.add_argument(
+        '-dir', '--destination-folder',
+        metavar='DIR',
+        type=str,
+        default=os.getcwd(),
+        help='name of the folder where to put the module')
+    return subparser
+
 def argument_parser(config):
     """
     This function create the help command line and manage and filter the
@@ -29,88 +77,13 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
     create_parser = subparsers.add_parser(
         'create',
         help='Inicializate module. Create new directory with basic files.')
-    create_parser.add_argument(
-        'module_name',
-        metavar='MODULE_NAME',
-        type=str,
-        help='name of the module to create.')
-    create_parser.add_argument(
-        '-d', '--module-developers',
-        metavar='DEVELOPERS_INFO',
-        type=str,
-        help=str('A string with the module developers information. The format'
-                 ' of this string is \'First Developer Name'
-                 ' <developer@mail.com>, Second Developer Name'
-                 ' <developerX@mail.com>\''),
-        required=True)
-    create_parser.add_argument(
-        '-p', '--module-planners',
-        metavar='PLANNERS_INFO',
-        type=str,
-        help=str('A string with the module planners information. The format'
-                 ' of this string is \'First Planner Name'
-                 ' <planner@mail.com>, Second Planner Name'
-                 ' <plannerX@mail.com>\''),
-        required=True)
-    create_parser.add_argument(
-        '-t', '--module-auditors',
-        metavar='AUDITORS_INFO',
-        type=str,
-        help=str('A string with the module auditors information. The format'
-                 ' of this string is \'First Auditor Name'
-                 ' <auditor@mail.com>, Second Auditor Name'
-                 ' <auditorX@mail.com>\''),
-        required=True)
-    create_parser.add_argument(
-        '-dir', '--destination-folder',
-        metavar='DIR',
-        type=str,
-        default=os.getcwd(),
-        help='name of the folder where to put the module')
+    create_paser = add_common_options(create_parser)
 
     # create sub parser for branch action
     branch_parser = subparsers.add_parser(
         'branch',
         help='Create a new module using a branch.')
-
-    branch_parser.add_argument(
-        'module_name',
-        metavar='MODULE_NAME',
-        type=str,
-        help='name of the module to create.')
-    branch_parser.add_argument(
-        '-d', '--module-developers',
-        metavar='DEVELOPERS_INFO',
-        type=str,
-        help=str('A string with the module developers information. The format'
-                 ' of this string is \'First Developer Name'
-                 ' <developer@mail.com>, Second Developer Name'
-                 ' <developerX@mail.com>\''),
-        required=True)
-    branch_parser.add_argument(
-        '-p', '--module-planners',
-        metavar='PLANNERS_INFO',
-        type=str,
-        help=str('A string with the module planners information. The format'
-                 ' of this string is \'First Planner Name'
-                 ' <planner@mail.com>, Second Planner Name'
-                 ' <plannerX@mail.com>\''),
-        required=True)
-    branch_parser.add_argument(
-        '-t', '--module-auditors',
-        metavar='AUDITORS_INFO',
-        type=str,
-        help=str('A string with the module auditors information. The format'
-                 ' of this string is \'First Auditor Name'
-                 ' <auditor@mail.com>, Second Auditor Name'
-                 ' <auditorX@mail.com>\''),
-        required=True)
-    branch_parser.add_argument(
-        '-dir', '--destination-folder',
-        metavar='DIR',
-        type=str,
-        default=os.getcwd(),
-        help='name of the folder where to put the module')
+    branch_paser = add_common_options(branch_parser)
 
     branch_parser.add_argument(
         '-r', '--parent_repo',
@@ -146,38 +119,8 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
     append_parser = subparsers.add_parser(
         'append', 
         help='Append a file to the module.')
-    append_parser.add_argument(
-        'module_name',
-        metavar='MODULE_NAME',
-        type=str,
-        help='name of the module to create.')
-    append_parser.add_argument(
-        '-d', '--module-developers',
-        metavar='DEVELOPERS_INFO',
-        type=str,
-        help=str('A string with the module developers information. The format'
-                 ' of this string is \'First Developer Name'
-                 ' <developer@mail.com>, Second Developer Name'
-                 ' <developerX@mail.com>\''),
-        required=True)
-    append_parser.add_argument(
-        '-p', '--module-planners',
-        metavar='PLANNERS_INFO',
-        type=str,
-        help=str('A string with the module planners information. The format'
-                 ' of this string is \'First Planner Name'
-                 ' <planner@mail.com>, Second Planner Name'
-                 ' <plannerX@mail.com>\''),
-        required=True)
-    append_parser.add_argument(
-        '-t', '--module-auditors',
-        metavar='AUDITORS_INFO',
-        type=str,
-        help=str('A string with the module auditors information. The format'
-                 ' of this string is \'First Auditor Name'
-                 ' <auditor@mail.com>, Second Auditor Name'
-                 ' <auditorX@mail.com>\''),
-        required=True)
+    append_paser = add_common_options(append_parser)
+
     append_parser.add_argument(
         '-f', '--append-file',
         metavar='TYPE',
@@ -185,14 +128,8 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         required=True,
         choices=['model', 'wizard'],
         help='The type of file you want to append.')
-    append_parser.add_argument(
-        '-dir', '--destination-folder',
-        metavar='DIR',
-        type=str,
-        default=os.getcwd(),
-        help='name of the folder where to put the module')
 
-    # create sub parser for append action
+    # create sub parser for config action
     config_parser = subparsers.add_parser(
         'config', 
         help='Set and check the oerpmodule config')
