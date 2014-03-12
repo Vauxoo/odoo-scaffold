@@ -221,7 +221,8 @@ class Module(object):
         Add the icon.png file to the module.
         """
         print '... Adding module icon'
-        os.system('cp %s/src/icon.png %s/static/src/img/' % (sys.argv[0].split('bin')[0], self.path))
+        this_dir, this_filename = os.path.split(__file__)
+        os.system('cp %s/data/icon.png %s/static/src/img/' % (this_dir, self.path))
         return True
 
     def create_index_html_file(self):
