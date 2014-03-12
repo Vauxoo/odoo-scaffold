@@ -344,7 +344,7 @@ class Branch(object):
         print '... Add init revision for the beginning of the new module dev'
         os.system('cd %s && bzr ci -m "%s" --unchanged --quiet' % (
             self.path,
-            '[INIT] new branch for development of %s module.' % (self.branch_name,)))
+            '[INIT] new branch for development of %s module.' % (self.module.name,)))
         os.system('cd %s && bzr push lp:%s/%s/%s --remember' % (
             self.path, self.repo_group, self.repo_name,
             self.branch_name))
