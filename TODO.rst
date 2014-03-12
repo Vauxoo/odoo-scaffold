@@ -1,13 +1,10 @@
 TODO
 ====
 
-- Agregar al descriptir openerp qweb, js y ccs.
 - Mejorar la documentación del modulo porque no se entiende a buenas y primeras
   lo que devuelve.
 - falta crear un template con una vista generica para ponerla como parte del
   proceso
-- depuerar las opciones de la cli para hacerlas excluyentes en algunos casos 
-  (esto se logra haciendo un group con argsparse)
 - permitir la opción de trabajar un nuevo modulo sin tener que estar haciendo
   una copia del un repositorio padre y creando un nuevo branch. 
 - Utilizar la libreria python de launchpad-bzr para bajar la información de 
@@ -43,8 +40,10 @@ TODO
   de inicializacion del objeto oerp_module.
 - agregar un template para el archivo de index.html
 - agregar template para archivos dentro de /doc
-- agregar la opcion de colocarle un nombre descrito por el usuario como nombre
-  de branch.
+- agregar la opcion de colocarle al branch un nombre descrito por el usuario
+  en lugar del nombre generico que se le esta dando ahorita. 
 - sacar la clase branch del archivo module.py y colocarlo en un nuevo archivo
   branch.py
 - agregar doctest a cada metodo para probar si esta funcionando bien.
+- sacar la clase template del archivo module.py y colocarlo en un nuevo archivo
+  template.py
