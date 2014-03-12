@@ -325,15 +325,23 @@ class Branch(object):
         # TODO OPT add branch detail using python launchpad-bzr lib
 
         print '... Creating branch for the new module'
-        print '... [Note]: This process can take a while. Please wait...'
+        print ' ----- [Note]: This process can take a while. Please wait...'
+
+        src_cloud_branch_name = '/'.join(
+            self.repo_serie
+            and [self.repo_group, self.repo_name, self.repo_serie]
+            or [self.repo_group, self.repo_name])
+        new_cloud_branch_name = '/'.join(
+            [self.repo_group, self.repo_name, self.branch_name])
+
+        print ' ----- src.cloud.branch', src_cloud_branch_name  
+        print ' ----- new.cloud.branch', new_cloud_branch_name
+        print ' ----- new.local.branch', self.path
+
         print '... Create new module local branch'
         os.system('cp %s %s -r' % (
             self.parent_repo.local_path, self.path))
         os.system('echo \'\' | cat - > %s/.bzr/branch/branch.conf'% (self.path,))
-
-        new_cloud_branch_name = \
-                self.repo_group + '/' + self.repo_name \
-                + '/' + self.branch_name))
 
         print '... Create new module cloud branch'
         os.system('bzr branch lp:%s/%s/%s lp:%s --quiet' % (
@@ -348,7 +356,7 @@ class Branch(object):
         os.system('cd %s && bzr ci -m "%s" --unchanged --quiet' % (
             self.path,
             '[INIT] new branch for development of %s module.' % (self.module.name,)))
-        os.system('cd %s && bzr push lp:%s --remember' % (
+        os.system('cd %s && bzr push lp:%s --remember --quiet' % (
             self.path, new_cloud_branch_name))
         return True
 
