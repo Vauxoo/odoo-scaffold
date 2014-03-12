@@ -43,3 +43,8 @@ TODO
   de inicializacion del objeto oerp_module.
 - agregar un template para el archivo de index.html
 - agregar template para archivos dentro de /doc
+- agregar la opcion de colocarle un nombre descrito por el usuario como nombre
+  de branch.
+- sacar la clase branch del archivo module.py y colocarlo en un nuevo archivo
+  branch.py
+- agregar doctest a cada metodo para probar si esta funcionando bien.
