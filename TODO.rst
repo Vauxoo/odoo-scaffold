@@ -42,8 +42,10 @@ TODO
 - agregar template para archivos dentro de /doc
 - agregar la opcion de colocarle al branch un nombre descrito por el usuario
   en lugar del nombre generico que se le esta dando ahorita. 
-- sacar la clase branch del archivo module.py y colocarlo en un nuevo archivo
-  branch.py
 - agregar doctest a cada metodo para probar si esta funcionando bien.
 - sacar la clase template del archivo module.py y colocarlo en un nuevo archivo
   template.py
+- probar las opciones de -dir en los subcomandos branch y append y verificar
+  que esten funcionando correctamente.
+- investigar como hacer para cargar el archivo icon.png para que de alguna
+  manera que se pueda utilizar despues de instalar oerpmodule.
