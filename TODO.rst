@@ -49,3 +49,5 @@ TODO
   que esten funcionando correctamente.
 - investigar como hacer para cargar el archivo icon.png para que de alguna
   manera que se pueda utilizar despues de instalar oerpmodule.
+
+# vim:filetype=rst:
