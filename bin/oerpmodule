@@ -196,13 +196,14 @@ def main():
         args.list_repositories and config.print_repositories()
     else:
         module = oerp_module.Module(
-            args.module_name, args.branch_suffix, args.parent_repo,
-            args.oerp_version,
-            args.module_developers, args.module_planners, args.module_auditors,
-            args.branch_create, folder=args.destination_folder)
+            args.module_name, args.module_developers, args.module_planners,
+            args.module_auditors, folder=args.destination_folder)
+
 
         if args.action == 'create':
             args.branch_create and module.create_branch()
+            # TODO: make branch model instance with this parameters:
+            # args.branch_suffix, args.parent_repo, args.oerp_version,
             module.create_main_directory()
             module.create_directories()
             module.create_base_files()

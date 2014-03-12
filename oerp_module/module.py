@@ -134,15 +134,11 @@ class Module(object):
         'static/src/xml',
         'static/src/img']
 
-    def __init__(self, name, branch_suffix, parent_repo, version,
-                 module_developers, module_planners, module_auditors,
-                 branch_create, folder=None):
+    def __init__(self, name, module_developers, module_planners,
+                 module_auditors, folder=None):
         """
         iniciialization of the module
         @param name: new module name
-        @param version: the version of the new model
-        @param branch_suffix:
-        @param repository:
         """
 
         #~ TODO: add the manage a list of developers, planners and auditors
@@ -150,30 +146,7 @@ class Module(object):
         print '\n... Checking Script Parameters'
         self.name = name
         self.directory = name
-        self.branch_suffix = branch_suffix or ''
-
-        if version in _oerp_version_list:
-            self.version = version
-        else:
-            raise Exception("Bad parameters. '%s' Its not a valid openerp "
-                            "version" % (version,))
-
-        self.config = Config()
-        if parent_repo in self.config.repositories:
-            self.branch_name = '%s-dev-%s-%s' % (version, name, branch_suffix)
-            self.parent_repo = self.config.repositories[parent_repo]
-            self.repo_name = self.parent_repo.name
-            self.repo_group = self.parent_repo.group
-            self.repo_serie = self.parent_repo.serie
-        else:
-            raise Exception("Bad paramenters. The repository %s does not exist"
-                            " in the current script configuration. Please add"
-                            " the repo to the repository data." % (
-                            parent_repo,))
-
-        self.path = branch_create and '%s/%s' % (
-            self.branch_name, self.directory) or '%s/%s' % (folder,
-                self.directory)
+        self.path = '%s/%s' % (folder, self.directory)
 
         self.template = Template()
         self.license_msg = self.set_license_msg(module_developers,
@@ -181,43 +154,6 @@ class Module(object):
                                                 module_auditors)
         return None
 
-    def create_branch(self):
-        """
-        Create a new branch for the development module using the parent repo
-        serie branch like point of start:
-        1. create module new local branch by copying the parent local repo
-        2. create module new cloud branch by copying the parent cloud repo
-        3. link both local and cloud branches
-        4. mark new branch with a init revision for new module
-        """
-        # TODO update parent repo before copy for the new module
-        # TODO OPT add branch detail using python launchpad-bzr lib
-
-        print '... Creating branch for the new module'
-
-        print 'Create new module local branch'
-        os.system('cp %s %s -r' % (
-            self.parent_repo.local_path, self.branch_name))
-        os.system('echo \'\' | cat - > %s/.bzr/branch/branch.conf'% (self.branch_name,))
-
-        print 'Create new module cloud branch'
-        os.system('bzr branch lp:%s/%s/%s lp:%s/%s/%s' % (
-            self.repo_group, self.repo_name, self.repo_serie,
-            self.repo_group, self.repo_name, self.branch_name))
-
-        print 'Linking local and cloud branches'
-        os.system('cd %s && bzr pull lp:%s/%s/%s --remember' % (
-            self.branch_name, self.repo_group, self.repo_name,
-            self.branch_name))
-
-        print 'Add mark revision of the begining of the new module dev'
-        os.system('cd %s && bzr ci -m "%s" --unchanged' % (
-            self.branch_name,
-            '[INIT] new branch for development of %s module.' % (self.name,)))
-        os.system('cd %s && bzr push lp:%s/%s/%s --remember' % (
-            self.branch_name, self.repo_group, self.repo_name,
-            self.branch_name))
-        return True
 
     def create_main_directory(self):
         """
@@ -322,6 +258,96 @@ class Module(object):
         return license_msg % (
             module_developers, module_planners, module_auditors)
 
+
+class Branch(object):
+
+    """
+    Branch representing object.
+    """
+
+    def __init__(self, branch_suffix, parent_repo, version):
+        """
+        Initializate branch object
+
+        @param version: the version of the new model
+        @param branch_suffix:
+        @param repository:
+        """
+        self.branch_name
+        self.Module.name
+        self.parent_repo.local_path
+
+        self.repo_group
+        self.repo_name
+        self.repo_serie
+
+        self.branch_suffix = branch_suffix or ''
+
+        if version in _oerp_version_list:
+            self.version = version
+        else:
+            raise Exception("Bad parameters. '%s' Its not a valid openerp "
+                            "version" % (version,))
+
+# TODO: movi el self.config the Module a clase Branch. revisar que no haya
+# afactado a nada. 
+        self.config = Config()
+        if parent_repo in self.config.repositories:
+            self.branch_name = '%s-dev-%s-%s' % (version, name, branch_suffix)
+            self.parent_repo = self.config.repositories[parent_repo]
+            self.repo_name = self.parent_repo.name
+            self.repo_group = self.parent_repo.group
+            self.repo_serie = self.parent_repo.serie
+        else:
+            raise Exception("Bad paramenters. The repository %s does not exist"
+                            " in the current script configuration. Please add"
+                            " the repo to the repository data." % (
+                            parent_repo,))
+
+ # TODO: hacer que cuando se cree un branch se recaulcule el path de self.path
+ # en clase MOdule
+        self.path = branch_create and '%s/%s' % (
+            self.branch_name, self.directory) or '%s/%s' % (folder,
+                self.directory)
+
+    def create_branch(self):
+        """
+        Create a new branch for the development module using the parent repo
+        serie branch like point of start:
+        1. create module new local branch by copying the parent local repo
+        2. create module new cloud branch by copying the parent cloud repo
+        3. link both local and cloud branches
+        4. mark new branch with a init revision for new module
+        """
+        # TODO update parent repo before copy for the new module
+        # TODO OPT add branch detail using python launchpad-bzr lib
+
+        print '... Creating branch for the new module'
+
+        print 'Create new module local branch'
+        os.system('cp %s %s -r' % (
+            self.parent_repo.local_path, self.branch_name))
+        os.system('echo \'\' | cat - > %s/.bzr/branch/branch.conf'% (self.branch_name,))
+
+        print 'Create new module cloud branch'
+        os.system('bzr branch lp:%s/%s/%s lp:%s/%s/%s' % (
+            self.repo_group, self.repo_name, self.repo_serie,
+            self.repo_group, self.repo_name, self.branch_name))
+
+        print 'Linking local and cloud branches'
+        os.system('cd %s && bzr pull lp:%s/%s/%s --remember' % (
+            self.branch_name, self.repo_group, self.repo_name,
+            self.branch_name))
+
+        print 'Add mark revision of the begining of the new module dev'
+        os.system('cd %s && bzr ci -m "%s" --unchanged' % (
+            self.branch_name,
+            '[INIT] new branch for development of %s module.' % (self.name,)))
+        os.system('cd %s && bzr push lp:%s/%s/%s --remember' % (
+            self.branch_name, self.repo_group, self.repo_name,
+            self.branch_name))
+        return True
+
     def branch_changes_apply(self):
         """
         Create one revision to commit the structure and basic module files
@@ -341,4 +367,3 @@ class Module(object):
         os.system('bzr push :parent' % (
             self.path, '[ADD] Module structure and basic files'))
         return True
-
