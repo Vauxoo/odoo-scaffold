@@ -68,16 +68,61 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         default=os.getcwd(),
         help='name of the folder where to put the module')
 
+    # create sub parser for branch action
+    branch_parser = subparsers.add_parser(
+        'branch',
+        help='Create a new module using a branch.')
 
+    branch_parser.add_argument(
+        'module_name',
+        metavar='MODULE_NAME',
+        type=str,
+        help='name of the module to create.')
+    branch_parser.add_argument(
+        '-d', '--module-developers',
+        metavar='DEVELOPERS_INFO',
+        type=str,
+        help=str('A string with the module developers information. The format'
+                 ' of this string is \'First Developer Name'
+                 ' <developer@mail.com>, Second Developer Name'
+                 ' <developerX@mail.com>\''),
+        required=True)
+    branch_parser.add_argument(
+        '-p', '--module-planners',
+        metavar='PLANNERS_INFO',
+        type=str,
+        help=str('A string with the module planners information. The format'
+                 ' of this string is \'First Planner Name'
+                 ' <planner@mail.com>, Second Planner Name'
+                 ' <plannerX@mail.com>\''),
+        required=True)
+    branch_parser.add_argument(
+        '-t', '--module-auditors',
+        metavar='AUDITORS_INFO',
+        type=str,
+        help=str('A string with the module auditors information. The format'
+                 ' of this string is \'First Auditor Name'
+                 ' <auditor@mail.com>, Second Auditor Name'
+                 ' <auditorX@mail.com>\''),
+        required=True)
+    branch_parser.add_argument(
+        '-dir', '--destination-folder',
+        metavar='DIR',
+        type=str,
+        default=os.getcwd(),
+        help='name of the folder where to put the module')
 
+    branch_parser.add_argument(
+        '-r', '--parent_repo',
+        metavar='PARENT_REPO',
+        type=str,
+        required=True,
+        choices=config.get_repositories_names(),
+        help=('The name of repository from will be create the new module. To '
+              'look the repository list use oerpmodule config -l.'))
 
-
-    create_parser.add_argument(
-        '-b', '--branch-create', action='store_true',
-        help='create a branch copy in the parent repo that will holds the new'
-             ' module')
-    branch_group = create_parser.add_argument_group('Branch options', (
-        'Options needed to configure the new branch.'))
+    branch_group = branch_parser.add_argument_group('New Branch Name options', (
+        'This way you can configure the new branch name.'))
 
     branch_group.add_argument(
         '-s', '--branch-suffix',
@@ -87,20 +132,13 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
                  ' branch for identify the team user owner in a simply way,'
                  ' It use is recommended.'))
     branch_group.add_argument(
-        '-r', '--parent_repo',
-        metavar='PARENT_REPO',
-        type=str,
-        choices=config.get_repositories_names(),
-        help=('The name of repository from will be create the new module. To '
-              'look the repository list use the --list-repositories option.'))
-    branch_group.add_argument(
         '-ov', '--oerp-version',
         metavar='VERSION',
         type=str,
         choices=oerp_module._oerp_version_list,
         help='Openerp version number')
 
-    create_parser.set_defaults(
+    branch_parser.set_defaults(
         oerp_version='7.0',
         parent_repo='addons-vauxoo')
 
@@ -199,14 +237,16 @@ def main():
             args.module_name, args.module_developers, args.module_planners,
             args.module_auditors, folder=args.destination_folder)
 
-        if args.action == 'create':
-            if args.branch_create:
-                branch = oerp_module.Branch(
-                    module, args.branch_suffix, args.parent_repo,
-                    args.oerp_version, args.destination_folder)
-                branch.create_branch()
-                module.update_path(branch)
-
+        if args.action == 'branch':
+            branch = oerp_module.Branch(
+                module, args.branch_suffix, args.parent_repo,
+                args.oerp_version, args.destination_folder)
+            branch.create_branch()
+            module.update_path(branch)
+            module.create_main_directory()
+            module.create_directories()
+            module.create_base_files()
+        elif args.action == 'create':
             module.create_main_directory()
             module.create_directories()
             module.create_base_files()
