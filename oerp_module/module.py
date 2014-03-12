@@ -338,12 +338,12 @@ class Branch(object):
         print ' ----- new.cloud.branch', new_cloud_branch_name
         print ' ----- new.local.branch', self.path
 
-        print '... Create new module local branch'
+        print '... Create new local branch'
         os.system('cp %s %s -r' % (
             self.parent_repo.local_path, self.path))
         os.system('echo \'\' | cat - > %s/.bzr/branch/branch.conf'% (self.path,))
 
-        print '... Create new module cloud branch'
+        print '... Create new cloud branch'
         os.system('bzr branch lp:%s/%s/%s lp:%s --quiet' % (
             self.repo_group, self.repo_name, self.repo_serie,
             new_cloud_branch_name))
@@ -352,7 +352,7 @@ class Branch(object):
         os.system('cd %s && bzr pull lp:%s --remember --quiet' % (
             self.path, new_cloud_branch_name ))
 
-        print '... Add init revision for the beginning of the new module dev'
+        print '... Add init revision to the new branch'
         os.system('cd %s && bzr ci -m "%s" --unchanged --quiet' % (
             self.path,
             '[INIT] new branch for development of %s module.' % (self.module.name,)))
