@@ -360,6 +360,7 @@ class Branch(object):
             self.path, new_cloud_branch_name))
         return True
 
+    # TODO: this method is not used yet. please test.
     def branch_changes_apply(self):
         """
         Create one revision to commit the structure and basic module files
@@ -371,6 +372,7 @@ class Branch(object):
             self.path, '[ADD] Module structure and basic files'))
         return True
 
+    # TODO: this method is not used yet. please test.
     def push_changes(self):
         """
         Push changes of the parent branch at the cloud 
