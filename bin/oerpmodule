@@ -2,6 +2,8 @@
 import oerp_module
 import argparse
 import argcomplete
+import os
+
 
 def argument_parser(config):
     """
@@ -9,7 +11,7 @@ def argument_parser(config):
     parameters of this program (default values, choices values)
     """
     parser = argparse.ArgumentParser(
-        prog='new_module_openerp',
+        prog='oerpmodule',
         description='Create new openerp module structure and basic files.',
         epilog="""
 Openerp Developer Comunity Tool
@@ -17,61 +19,59 @@ Development by Vauxoo Team (lp:~vauxoo)
 Coded by Katherine Zaoral <kathy@vauxoo.com>.
 Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    subparsers = parser.add_subparsers(
+        description=('Valid actions over a module than can be done with'
+            ' oerpmodule.'),
+        dest='action',
+        help='subcommands help')
 
-    action_group = parser.add_argument_group('Commands', (
-        'Actions that can be done with this script.'))
-    global_group = parser.add_argument_group('Global required options', (
-        'Options used in different actions.'))
-    branch_group = parser.add_argument_group('Branch options', (
-        'Options needed to configure the new branch.'))
-
-    action_group.add_argument(
-        '-c', '--create-structure', action='store_true',
-        help='inicializate module / create new directory with basic files')
-    action_group.add_argument(
-        '-b', '--branch-create', action='store_true',
-        help='create a branch copy in the parent repo that will holds the new'
-             ' module')
-    action_group.add_argument(
-        '-a', '--append-file',
-        metavar='TYPE_OF_FILE',
-        type=str,
-        help='append a file to the module',
-        choices=['model', 'wizard'])
-
-    global_group.add_argument(
-        '-n', '--module-name',
+    # create sub parser for create action
+    create_parser = subparsers.add_parser(
+        'create',
+        help='Inicializate module. Create new directory with basic files.')
+    create_parser.add_argument(
+        'module_name',
         metavar='MODULE_NAME',
         type=str,
-        required=True,
         help='name of the module to create.')
-    global_group.add_argument(
+    create_parser.add_argument(
         '-d', '--module-developers',
-        metavar='DEVELOPERS INFO',
+        metavar='DEVELOPERS_INFO',
         type=str,
         help=str('A string with the module developers information. The format'
                  ' of this string is \'First Developer Name'
                  ' <developer@mail.com>, Second Developer Name'
                  ' <developerX@mail.com>\''),
         required=True)
-    global_group.add_argument(
+    create_parser.add_argument(
         '-p', '--module-planners',
-        metavar='PLANNERS INFO',
+        metavar='PLANNERS_INFO',
         type=str,
         help=str('A string with the module planners information. The format'
                  ' of this string is \'First Planner Name'
                  ' <planner@mail.com>, Second Planner Name'
                  ' <plannerX@mail.com>\''),
         required=True)
-    global_group.add_argument(
+    create_parser.add_argument(
         '-t', '--module-auditors',
-        metavar='AUDITORS INFO',
+        metavar='AUDITORS_INFO',
         type=str,
         help=str('A string with the module auditors information. The format'
                  ' of this string is \'First Auditor Name'
                  ' <auditor@mail.com>, Second Auditor Name'
                  ' <auditorX@mail.com>\''),
         required=True)
+
+
+
+
+
+    create_parser.add_argument(
+        '-b', '--branch-create', action='store_true',
+        help='create a branch copy in the parent repo that will holds the new'
+             ' module')
+    branch_group = create_parser.add_argument_group('Branch options', (
+        'Options needed to configure the new branch.'))
 
     branch_group.add_argument(
         '-s', '--branch-suffix',
@@ -87,27 +87,74 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         choices=config.get_repositories_names(),
         help=('The name of repository from will be create the new module. To '
               'look the repository list use the --list-repositories option.'))
-
-    parser.add_argument(
-        '-l', '--list-repositories', action='store_true',
-        help='List the configurate repositories.')
-    parser.add_argument(
+    branch_group.add_argument(
         '-ov', '--oerp-version',
         metavar='VERSION',
         type=str,
         choices=oerp_module._oerp_version_list,
         help='Openerp version number')
-    parser.add_argument(
-        '-f', '--destionation-folder',
-        #~ action='store_true',
+
+    create_parser.set_defaults(
+        oerp_version='7.0',
+        parent_repo='addons-vauxoo')
+
+    # create sub parser for append action
+    append_parser = subparsers.add_parser(
+        'append', 
+        help='Append a file to the module.')
+    append_parser.add_argument(
+        'module_name',
+        metavar='MODULE_NAME',
+        type=str,
+        help='name of the module to create.')
+    append_parser.add_argument(
+        '-d', '--module-developers',
+        metavar='DEVELOPERS_INFO',
+        type=str,
+        help=str('A string with the module developers information. The format'
+                 ' of this string is \'First Developer Name'
+                 ' <developer@mail.com>, Second Developer Name'
+                 ' <developerX@mail.com>\''),
+        required=True)
+    append_parser.add_argument(
+        '-p', '--module-planners',
+        metavar='PLANNERS_INFO',
+        type=str,
+        help=str('A string with the module planners information. The format'
+                 ' of this string is \'First Planner Name'
+                 ' <planner@mail.com>, Second Planner Name'
+                 ' <plannerX@mail.com>\''),
+        required=True)
+    append_parser.add_argument(
+        '-t', '--module-auditors',
+        metavar='AUDITORS_INFO',
+        type=str,
+        help=str('A string with the module auditors information. The format'
+                 ' of this string is \'First Auditor Name'
+                 ' <auditor@mail.com>, Second Auditor Name'
+                 ' <auditorX@mail.com>\''),
+        required=True)
+    append_parser.add_argument(
+        '-f', '--append-file',
+        metavar='TYPE',
+        type=str,
+        required=True,
+        choices=['model', 'wizard'],
+        help='The type of file you want to append.')
+    append_parser.add_argument(
+        '-dir', '--destionation-folder',
         metavar='DIR',
         type=str,
+        default=os.getcwd(),
         help='name of the folder where to put the module')
 
-    parser.set_defaults(
-        oerp_version='7.0',
-        parent_repo='addons-vauxoo'
-    )
+    # create sub parser for append action
+    config_parser = subparsers.add_parser(
+        'config', 
+        help='Set and check the oerpmodule config')
+    config_parser.add_argument(
+        '-l', '--list-repositories', action='store_true',
+        help='List the configurate repositories.')
 
     argcomplete.autocomplete(parser)
     return parser.parse_args()
@@ -116,30 +163,29 @@ def main():
 
     config = oerp_module.Config()
     args = argument_parser(config)
-
+  
     print'\n... Configuration of Parameters Set'
     for (parameter, value) in args.__dict__.iteritems():
         print '%s = %s' % (parameter, value)
+    exit()
 
-    if args.list_repositories:
-        config.print_repositories()
-        exit()
+    if args.action == 'config':
+        args.list_repositories and config.print_repositories()
+    else:
+        module = oerp_module.Module(
+            args.module_name, args.branch_suffix, args.parent_repo,
+            args.oerp_version,
+            args.module_developers, args.module_planners, args.module_auditors,
+            args.branch_create, folder=args.destionation_folder)
 
-    module = oerp_module.Module(
-        args.module_name, args.branch_suffix, args.parent_repo, args.oerp_version,
-        args.module_developers, args.module_planners, args.module_auditors,
-        args.branch_create, folder=args.destionation_folder)
+        if args.action == 'create':
+            args.branch_create and module.create_branch()
+            module.create_main_directory()
+            module.create_directories()
+            module.create_base_files()
 
-    if args.branch_create:
-        module.create_branch()
-
-    if args.create_structure:
-        module.create_main_directory()
-        module.create_directories()
-        module.create_base_files()
-
-    if args.append_file:
-        module.create_py_files(args.append_file)
+        elif args.action == 'append':
+            module.create_py_files(args.append_file)
 
         #~ module.branch_changes_apply()
 
