@@ -31,7 +31,12 @@ def main():
     config = oerp_module.Config()
     args = config.argument_parser()
     confirm_run(args)
-  
+    run(args ,config)
+
+def run(args, config):
+    """
+    run the corresponding action
+    """
     if args.action == 'config':
         args.list_repositories and config.print_repositories()
     else:
@@ -57,6 +62,7 @@ def main():
             module.create_py_files(args.append_file, args.file_name)
 
         #~ module.branch_changes_apply()
+    return True
 
 if __name__ == '__main__':
     main()
