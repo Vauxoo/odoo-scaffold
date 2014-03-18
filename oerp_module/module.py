@@ -238,12 +238,24 @@ class Module(object):
         """
         """
         print '... Create the model and wirzard py files'
-        new_file = '%s/%s.py' % (file_py, self.name)
+        file_name = self.name
+        edit_folder = '/'.join([self.path, file_py])
+        init_file_full_path = '/'.join([edit_folder, '__init__.py'])
+        new_file_full_path = '/'.join([edit_folder, '.'.join([file_name, 'py'])])
+
         content = self.license_msg + getattr(
             self.template, file_py + '_py') % (
-                self.name, self.name.replace('_', '.'))
+                file_name, file_name.replace('_', '.'))
+
+        print '... Creating the new file'
         os.system('echo """%s""" | cat - > %s' % (
-            content, '%s/%s' % (self.path, new_file)))
+            content, new_file_full_path))
+        print ' ---- new file', new_file_full_path
+
+        print '... Add it to the correspond iniy file.'
+        os.system('echo """import %s""" >> %s' % (
+            file_name, init_file_full_path))
+        print ' ---- modificated file', init_file_full_path
         return True
 
     def set_license_msg(self, module_developers, module_planners,
