@@ -3,8 +3,6 @@ import os
 import sys
 from config import *
 
-_oerp_version_list = ['6.0', '6.1', '7.0']
-
 
 class Template(object):
 

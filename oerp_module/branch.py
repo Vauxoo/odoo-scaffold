@@ -25,7 +25,7 @@ class Branch(object):
                 "Bad paramenters. The repository %s does not exist"
                 " in the current script configuration. Please add"
                 " the repo to the repository data." % (parent_repo,))
-        if version not in _oerp_version_list:
+        if version not in self.config._oerp_version_list:
             raise Exception("Bad parameters. '%s' Its not a valid openerp "
                             "version" % (version,))
 
