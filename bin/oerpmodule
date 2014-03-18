@@ -31,38 +31,7 @@ def main():
     config = oerp_module.Config()
     args = config.argument_parser()
     confirm_run(args)
-    run(args ,config)
-
-def run(args, config):
-    """
-    run the corresponding action
-    """
-    if args.action == 'config':
-        args.list_repositories and config.print_repositories()
-    else:
-        module = oerp_module.Module(
-            args.module_name, args.module_developers, args.module_planners,
-            args.module_auditors, folder=args.destination_folder)
-
-        if args.action == 'branch':
-            branch = oerp_module.Branch(
-                module, args.branch_suffix, args.parent_repo,
-                args.oerp_version, args.destination_folder)
-            branch.create_branch()
-            module.update_path(branch)
-            module.create_main_directory()
-            module.create_directories()
-            module.create_base_files()
-        elif args.action == 'create':
-            module.create_main_directory()
-            module.create_directories()
-            module.create_base_files()
-
-        elif args.action == 'append':
-            module.create_py_files(args.append_file, args.file_name)
-
-        #~ module.branch_changes_apply()
-    return True
+    oerp_module.run(args ,config)
 
 if __name__ == '__main__':
     main()
