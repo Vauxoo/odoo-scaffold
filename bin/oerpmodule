@@ -124,12 +124,16 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
     append_paser = add_common_options(append_parser)
 
     append_parser.add_argument(
-        '-f', '--append-file',
-        metavar='TYPE',
+        'append_file',
+        metavar='FILE_TYPE',
         type=str,
-        required=True,
         choices=['model', 'wizard'],
         help='The type of file you want to append.')
+    append_parser.add_argument(
+        'file_name',
+        metavar='FILE_NAME',
+        type=str,
+        help='the name of the new model or wizard file that will be created.')
 
     # create sub parser for config action
     config_parser = subparsers.add_parser(
@@ -191,7 +195,7 @@ def main():
             module.create_base_files()
 
         elif args.action == 'append':
-            module.create_py_files(args.append_file)
+            module.create_py_files(args.append_file, args.file_name)
 
         #~ module.branch_changes_apply()
 

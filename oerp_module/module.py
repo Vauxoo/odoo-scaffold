@@ -234,11 +234,10 @@ class Module(object):
         os.system('touch %s/static/description/index.html' % (self.path,))
         return True
 
-    def create_py_files(self, file_py):
+    def create_py_files(self, file_py, file_name):
         """
         """
         print '... Create the model and wirzard py files'
-        file_name = self.name
         edit_folder = '/'.join([self.path, file_py])
         init_file_full_path = '/'.join([edit_folder, '__init__.py'])
         new_file_full_path = '/'.join([edit_folder, '.'.join([file_name, 'py'])])
