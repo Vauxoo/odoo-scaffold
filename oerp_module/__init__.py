@@ -35,3 +35,24 @@ def run(args, config):
 
         #~ module.branch_changes_apply()
     return True
+
+def confirm_run(args):
+    """
+    Manual confirmation before runing the script. Very usefull.
+    """
+    print'\n... Configuration of Parameters Set'
+    for (parameter, value) in args.__dict__.iteritems():
+        print '%s = %s' % (parameter, value)
+
+    confirm_flag = False
+    while confirm_flag not in ['y', 'n']:
+        confirm_flag = raw_input(
+            'Confirm the run with the above parameters? [y/n]: ')
+        if confirm_flag == 'y':
+            print 'The script parameters were confirmed by the user'
+        elif confirm_flag == 'n':
+            print 'The user cancel the operation'
+            exit()
+        else:
+            print 'The entry is not valid, please enter y or n.'
+    return True
