@@ -56,3 +56,11 @@ def confirm_run(args):
         else:
             print 'The entry is not valid, please enter y or n.'
     return True
+
+def main():
+
+    config = Config()
+    args = config.argument_parser()
+    confirm_run(args)
+    run(args, config)
+

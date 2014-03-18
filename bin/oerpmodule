@@ -4,13 +4,5 @@
 import oerp_module
 import os
 
-
-def main():
-
-    config = oerp_module.Config()
-    args = config.argument_parser()
-    oerp_module.confirm_run(args)
-    oerp_module.run(args ,config)
-
 if __name__ == '__main__':
-    main()
+    oerp_module.main()
