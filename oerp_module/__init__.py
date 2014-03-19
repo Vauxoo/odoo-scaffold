@@ -9,29 +9,30 @@ def run(args, config):
     """
     run the corresponding action
     """
-    if args.action == 'config':
-        args.list_repositories and config.print_repositories()
+    if args['action'] == 'config':
+        args['list_repositories'] and config.print_repositories()
     else:
         module = Module(
-            args.module_name, args.module_developers, args.module_planners,
-            args.module_auditors, folder=args.destination_folder)
+            args['module_name'], args['module_developers'],
+            args['module_planners'],
+            args['module_auditors'], folder=args['destination_folder'])
 
-        if args.action == 'branch':
+        if args['action'] == 'branch':
             branch = Branch(
-                module, args.branch_suffix, args.parent_repo,
-                args.oerp_version, args.destination_folder)
+                module, args['branch_suffix'], args['parent_repo'],
+                args['oerp_version'], args['destination_folder'])
             branch.create_branch()
             module.update_path(branch)
             module.create_main_directory()
             module.create_directories()
             module.create_base_files()
-        elif args.action == 'create':
+        elif args['action'] == 'create':
             module.create_main_directory()
             module.create_directories()
             module.create_base_files()
 
-        elif args.action == 'append':
-            module.create_py_files(args.append_file, args.file_name)
+        elif args['action'] == 'append':
+            module.create_py_files(args['append_file'], args['file_name'])
 
         #~ module.branch_changes_apply()
     return True
@@ -41,7 +42,7 @@ def confirm_run(args):
     Manual confirmation before runing the script. Very usefull.
     """
     print'\n... Configuration of Parameters Set'
-    for (parameter, value) in args.__dict__.iteritems():
+    for (parameter, value) in args.iteritems():
         print '%s = %s' % (parameter, value)
 
     confirm_flag = False
@@ -60,7 +61,7 @@ def confirm_run(args):
 def main():
 
     config = Config()
-    args = config.argument_parser()
+    args = config.argument_parser().__dict__
     confirm_run(args)
     run(args, config)
 
