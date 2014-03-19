@@ -5,12 +5,13 @@ from module import Module
 from config import Config
 from branch import Branch 
 
-def run(args, config):
+def run(args):
     """
     run the corresponding action
     """
     if args['action'] == 'config':
-        args['list_repositories'] and config.print_repositories()
+        Config()
+        args['list_repositories'] and Config().print_repositories()
     else:
         module = Module(
             args['module_name'], args['module_developers'],
@@ -63,5 +64,5 @@ def main():
     config = Config()
     args = config.argument_parser().__dict__
     confirm_run(args)
-    run(args, config)
+    run(args)
 
