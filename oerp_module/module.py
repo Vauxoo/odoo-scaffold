@@ -45,21 +45,18 @@ from openerp import tools
 
 
 class %s(osv.Model):
-
-    _name = '%s'
-    _description = _('Need to set the model name')
-    _inherit = ['mail.thread']
-
     '''
     Need to set the model description
     '''
 
+    _name = '%s'
+    _description = 'Need to set the model name'
     _columns = {
         'name': fields.char(
-            _('Name'),
+            'Name',
             required=True,
             size=64,
-            help=_('Name')),
+            help='help string'),
     }
 
     _defaults = {
@@ -73,14 +70,12 @@ from openerp.tools.translate import _
 import decimal_precision as dp
 
 
-class %s_wizard(osv.TransientModel):
-
-    _name = '%s'
-    _description = _('Need to set the model name')
-
+class %s_wizard(osv.osv_memory):
     '''
     Need to set the model description
     '''
+    _name = '%s'
+    _description = 'Need to set the model name'
 
     _columns = {
     }
@@ -100,7 +95,7 @@ class %s_wizard(osv.TransientModel):
     'category': '',
     'description': '''
 ''',
-    'depends': ['base', 'mail'],
+    'depends': [],
     'data': [],
     'demo': [],
     'test': [],
