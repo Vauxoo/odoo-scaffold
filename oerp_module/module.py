@@ -37,14 +37,16 @@ class Module(object):
         #~ TODO: add the manage a list of developers, planners and auditors
 
         print '\n... Checking Script Parameters'
-        self.name = name
-        self.directory = name
-        self.path = '%s/%s' % (folder, self.directory)
+        self.name = name.split('/')[-1]
+        self.path = '%s/%s' % (folder, name)
 
         self.module_developers = module_developers
         self.module_planners = module_planners
         self.module_auditors = module_auditors
 
+        #print ' ====== module object '
+        #import pprint
+        #pprint.pprint(self.__dict__)
         return None
 
 
@@ -84,11 +86,8 @@ class Module(object):
         developers, planners and auditors.
         """
         print '... Creating init files'
-        print ' ---- Creating __init__.py'
         self.create_file('__init__.py', '__init__.py', False)
-        print ' ---- Creating model/__init__.py'
         self.create_file(False, '__init__.py', 'model')
-        print ' ---- Creating wizard/__init__.py'
         self.create_file(False, '__init__.py', 'wizard')
         return True
 
@@ -117,20 +116,19 @@ class Module(object):
         template_file = \
             template_name and '/'.join([data_dir, template_name]) or ''
 
-        print 'this_dir', this_dir
-        print 'data_dir', data_dir 
-        print 'file_dir', file_dir 
-        print 'new_file', new_file_full_path
-        print 'new_file', new_file
-        print 'template', template_name
-        print 'template_file', template_file
+#        print 'this_dir', this_dir
+#        print 'data_dir', data_dir 
+#        print 'file_dir', file_dir 
+#        print 'new_file', new_file_full_path
+#        print 'template', template_name
+#        print 'template_file', template_file
 
         os.system("cat %s/license_msg.py %s > %s" % (
             data_dir, template_file, new_file_full_path))
-
+        file_name = getattr(self, 'file_name', '__NO_DEFINED__') 
         var_value_dict = {
-            '__OERPMODULE_CLASS_NAME__': self.file_name,
-            '__OERPMODULE_MODEL_NAME__': self.file_name.replace('_', '.'),
+            '__OERPMODULE_CLASS_NAME__': file_name,
+            '__OERPMODULE_MODEL_NAME__': file_name.replace('_', '.'),
             '__OERPMODULE_MODULE_NAME__': self.name,
             '__OERPMODULE_MODULE_DEVELOPERS__': self.module_developers,
             '__OERPMODULE_MODULE_PLANNERS__': self.module_planners,
@@ -139,6 +137,7 @@ class Module(object):
 
         for (var, val) in var_value_dict.iteritems():
             os.system('sed -i \'s/%s/%s/g\' %s' % (var, val, new_file_full_path))
+        print ' ----- new.file', new_file_full_path
         return True
 
     def add_icon_file(self):
@@ -168,20 +167,17 @@ class Module(object):
         self.file_name = file_name
 
         print '... Creating the new file'
-        print 'file_py', file_py
-        print 'file_name', file_name
+#        print 'file_py', file_py
+#        print 'file_name', file_name
         self.create_file(
             '.'.join([file_py,'py']),
             '.'.join([file_name, 'py']),
             file_py)
-        exit()
-
-        print ' ---- new file', new_file_full_path
 
         print '... Add it to the correspond iniy file.'
         os.system('echo """import %s""" >> %s' % (
             file_name, init_file_full_path))
-        print ' ---- modificated file', init_file_full_path
+        print ' ----- modified', init_file_full_path
         return True
 
     def set_license_msg(self, module_developers, module_planners,
