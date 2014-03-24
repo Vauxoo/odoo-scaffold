@@ -40,7 +40,7 @@ class Branch(object):
             or [self.version, self.module.name, 'dev'])
 
         self.path = '%s/%s' % (folder, self.branch_name)
-        self.module.path = '%s/%s' % (self.path, self.module.directory) 
+        self.module.path = '%s/%s' % (self.path, self.module.name) 
 
         print ' ----- branch.path', self.path
         print ' ----- module.path', self.module.path
