@@ -18,7 +18,7 @@ setup(
     author_email='kathy@vauxoo.com',
     packages=['oerp_module'],
     scripts=['bin/oerpmodule'],
-    package_data={'oerp_module': ['data/icon.png']},
+    package_data={'oerp_module': ['data/*']},
     #~ url='http://pypi.python.org/pypi/.../',
     #~ license='LICENSE.txt',
     description='Creating updating openerp module tool.',

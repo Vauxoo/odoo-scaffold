@@ -4,109 +4,6 @@ import sys
 from config import *
 
 
-class Template(object):
-
-    """
-    Contains the files templates
-    """
-
-    license_msg = \
-"""#!/usr/bin/python
-# -*- encoding: utf-8 -*-
-###############################################################################
-#    Module Writen to OpenERP, Open Source Management Solution
-#    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
-#    All Rights Reserved
-############# Credits #########################################################
-#    Coded by: %s
-#    Planified by: %s
-#    Audited by: %s
-###############################################################################
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as published
-#    by the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-###############################################################################
-"""
-
-    model_py = \
-"""
-from openerp.osv import fields, osv, orm
-from openerp.tools.translate import _
-from openerp import tools
-
-
-class %s(osv.Model):
-    '''
-    Need to set the model description
-    '''
-
-    _name = '%s'
-    _description = 'Need to set the model name'
-    _columns = {
-        'name': fields.char(
-            'Name',
-            required=True,
-            size=64,
-            help='help string'),
-    }
-
-    _defaults = {
-    }
-"""
-
-    wizard_py = \
-"""
-from openerp.osv import osv, fields
-from openerp.tools.translate import _
-import decimal_precision as dp
-
-
-class %s_wizard(osv.osv_memory):
-    '''
-    Need to set the model description
-    '''
-    _name = '%s'
-    _description = 'Need to set the model name'
-
-    _columns = {
-    }
-
-    _defaults = {
-    }
-
-"""
-
-    openerp_py = \
-"""
-{
-    'name': '%s',
-    'version': '1.0',
-    'author': 'Vauxoo',
-    'website': 'http://www.vauxoo.com/',
-    'category': '',
-    'description': '''
-''',
-    'depends': [],
-    'data': [],
-    'demo': [],
-    'test': [],
-    'qweb': [],
-    'js': [],
-    'css': [],
-    'active': False,
-    'installable': True,
-}"""
-
-
 class Module(object):
 
     directory_list = [
@@ -144,10 +41,10 @@ class Module(object):
         self.directory = name
         self.path = '%s/%s' % (folder, self.directory)
 
-        self.template = Template()
-        self.license_msg = self.set_license_msg(module_developers,
-                                                module_planners,
-                                                module_auditors)
+        self.module_developers = module_developers
+        self.module_planners = module_planners
+        self.module_auditors = module_auditors
+
         return None
 
 
@@ -186,27 +83,62 @@ class Module(object):
         Create init files with the license set taking into account the module
         developers, planners and auditors.
         """
-        init_files = {
-            '__init__.py': 'import model\nimport wizard',
-            'model/__init__.py': '',
-            'wizard/__init__.py': '',
-        }
-
         print '... Creating init files'
-        for (new_file, content) in init_files.iteritems():
-            os.system('echo """%s""" | cat - > %s' % (
-                self.license_msg + content, '%s/%s' % (self.path, new_file)))
+        print ' ---- Creating __init__.py'
+        self.create_file('__init__.py', '__init__.py', False)
+        print ' ---- Creating model/__init__.py'
+        self.create_file(False, '__init__.py', 'model')
+        print ' ---- Creating wizard/__init__.py'
+        self.create_file(False, '__init__.py', 'wizard')
         return True
 
     def create_openerp_file(self):
         """
         Create the openerp descriptive file
         """
-        content = self.template.openerp_py % (self.name,)
-
         print '... Create the openerp descriptive file'
-        os.system('echo """%s""" | cat - > %s' % (
-            self.license_msg + content, '%s/__openerp__.py' % (self.path,)))
+        self.create_file('__openerp__.py', '__openerp__.py', False)
+        return True
+
+    def create_file(self, template_name, new_file, file_dir=False):
+        """
+        Create a new file. First concatenate the content of the required
+        templates and generate the file in the new module corresponding
+        directory folder. And then convert the generate template like file
+        into the real file with the module data.
+        @param template_name: string with the name of the template to create,
+            complete name with the file extenesion
+        """
+        this_dir, this_filename = os.path.split(__file__)
+        data_dir = "/".join([this_dir, 'data'])
+        file_dir = file_dir and '/'.join([self.path, file_dir]) or self.path
+        new_file_full_path = '/'.join([file_dir, new_file])
+        
+        template_file = \
+            template_name and '/'.join([data_dir, template_name]) or ''
+
+        print 'this_dir', this_dir
+        print 'data_dir', data_dir 
+        print 'file_dir', file_dir 
+        print 'new_file', new_file_full_path
+        print 'new_file', new_file
+        print 'template', template_name
+        print 'template_file', template_file
+
+        os.system("cat %s/license_msg.py %s > %s" % (
+            data_dir, template_file, new_file_full_path))
+
+        var_value_dict = {
+            '__OERPMODULE_CLASS_NAME__': self.file_name,
+            '__OERPMODULE_MODEL_NAME__': self.file_name.replace('_', '.'),
+            '__OERPMODULE_MODULE_NAME__': self.name,
+            '__OERPMODULE_MODULE_DEVELOPERS__': self.module_developers,
+            '__OERPMODULE_MODULE_PLANNERS__': self.module_planners,
+            '__OERPMODULE_MODULE_AUDITORS__': self.module_auditors,
+        }
+
+        for (var, val) in var_value_dict.iteritems():
+            os.system('sed -i \'s/%s/%s/g\' %s' % (var, val, new_file_full_path))
         return True
 
     def add_icon_file(self):
@@ -233,15 +165,17 @@ class Module(object):
         print '... Create the model and wirzard py files'
         edit_folder = '/'.join([self.path, file_py])
         init_file_full_path = '/'.join([edit_folder, '__init__.py'])
-        new_file_full_path = '/'.join([edit_folder, '.'.join([file_name, 'py'])])
-
-        content = self.license_msg + getattr(
-            self.template, file_py + '_py') % (
-                file_name, file_name.replace('_', '.'))
+        self.file_name = file_name
 
         print '... Creating the new file'
-        os.system('echo """%s""" | cat - > %s' % (
-            content, new_file_full_path))
+        print 'file_py', file_py
+        print 'file_name', file_name
+        self.create_file(
+            '.'.join([file_py,'py']),
+            '.'.join([file_name, 'py']),
+            file_py)
+        exit()
+
         print ' ---- new file', new_file_full_path
 
         print '... Add it to the correspond iniy file.'
