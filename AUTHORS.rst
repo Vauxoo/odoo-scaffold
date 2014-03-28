@@ -1,3 +1,3 @@
 Original Author
 ---------------
-Katherine Zaoral <katherine.zaoral@vauxoo.com>
+Katherine Zaoral <kathy@vauxoo.com>
