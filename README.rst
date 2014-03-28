@@ -66,4 +66,8 @@ option save the installed files in a new txt file. Like this::
 Then you need to manually remove all the installed files. For this task you
 cant use the next command::
 
-    $ cat files.txt | xargs rm -rf
+    $ sudo su
+    # cd <carpeta-modulo-python>
+    # cat unistall-files.txt | xargs rm -rf
+    # exit
+    $ rm unistall-files.txt

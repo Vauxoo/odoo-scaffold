@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+# PYTHON_ARGCOMPLETE_OK
 from distutils.core import setup
 try:
     # 3.x
