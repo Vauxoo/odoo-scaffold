@@ -3,7 +3,7 @@ from openerp.tools.translate import _
 import decimal_precision as dp
 
 
-class __OERPMODULE_CLASS_NAME__wizard(osv.osv_memory):
+class __OERPMODULE_CLASS_NAME__wizard(osv.TransientModel):
     """
     Need to set the model description
     """
