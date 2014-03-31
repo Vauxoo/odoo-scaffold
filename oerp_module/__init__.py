@@ -5,6 +5,7 @@ from module import Module
 from config import Config
 from branch import Branch 
 
+import os
 import argparse
 import argcomplete
 
