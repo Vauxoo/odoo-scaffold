@@ -8,6 +8,20 @@ from branch import Branch
 import argparse
 import argcomplete
 
+def dir_full_path(path):
+    """
+    Calculate the abosulte path for a given path. It get the absolute path
+    taking into account the current path were the tool is running.
+    @param path: a directory path
+    @return: the absolute path of a directory.
+    """
+    my_path = os.path.abspath(path)
+    if not os.path.isdir(my_path):
+        msg = 'The directory given did not exist %s' % my_path
+        raise argparse.ArgumentTypeError(msg)
+    return my_path
+
+
 def argument_parser():
     """
     This function create the help command line and manage and filter the
@@ -143,7 +157,7 @@ def add_common_options(subparser, my_config):
     subparser.add_argument(
         '-dir', '--destination-folder',
         metavar='DIR',
-        type=str,
+        type=dir_full_path,
         default=my_config.get_current_path(),
         help='name of the folder where to put the module')
     return subparser
