@@ -21,8 +21,7 @@ def dir_full_path(path):
         raise argparse.ArgumentTypeError(msg)
     return my_path
 
-
-def argument_parser():
+def argument_parser(args_list=None):
     """
     This function create the help command line and manage and filter the
     parameters of this program (default values, choices values)
@@ -112,7 +111,7 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         help='List the configurate repositories.')
 
     argcomplete.autocomplete(parser)
-    return parser.parse_args().__dict__
+    return parser.parse_args(args=args_list).__dict__
 
 def add_common_options(subparser, my_config):
     """
