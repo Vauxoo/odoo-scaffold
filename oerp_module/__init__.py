@@ -176,24 +176,24 @@ def run(args):
     if args['action'] == 'config':
         args['list_repositories'] and my_config.print_repositories()
     else:
-        module = Module(
+        module_obj = Module(
             args['module_name'], args['module_developers'],
             args['module_planners'],
             args['module_auditors'], folder=args['destination_folder'])
 
         if args['action'] == 'branch':
             branch = Branch(
-                module, args['branch_suffix'], args['parent_repo'],
+                module_obj, args['branch_suffix'], args['parent_repo'],
                 args['oerp_version'], args['destination_folder'])
             branch.create_branch()
-            module.update_path(branch)
-            module.create()
+            module_obj.update_path(branch)
+            module_obj.create()
         elif args['action'] == 'create':
-            module.create()
+            module_obj.create()
         elif args['action'] == 'append':
-            module.create_py_files(args['append_file'], args['file_name'])
+            module_obj.create_py_files(args['append_file'], args['file_name'])
 
-        #~ module.branch_changes_apply()
+        #~ module_obj.branch_changes_apply()
     return True
 
 def confirm_run(args):
