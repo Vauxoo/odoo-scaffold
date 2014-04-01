@@ -182,11 +182,11 @@ def run(args):
             args['module_auditors'], folder=args['destination_folder'])
 
         if args['action'] == 'branch':
-            branch = Branch(
+            branch_obj = Branch(
                 module_obj, args['branch_suffix'], args['parent_repo'],
                 args['oerp_version'], args['destination_folder'])
-            branch.create_branch()
-            module_obj.update_path(branch)
+            branch_obj.create_branch()
+            module_obj.update_path(branch_obj)
             module_obj.create()
         elif args['action'] == 'create':
             module_obj.create()
