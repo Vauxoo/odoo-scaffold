@@ -48,6 +48,12 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         'create',
         help='Inicializate module. Create new directory with basic files.')
     create_paser = add_common_options(create_parser, my_config)
+    create_paser.add_argument(
+        '--add-init-data',
+        metavar='CSV_DIR',
+        type=dir_full_path,
+        help=('path where the csv data it is. Note: This options depends on'
+              ' the csv2xml python module'))
 
     # create sub parser for branch action
     branch_parser = subparsers.add_parser(
