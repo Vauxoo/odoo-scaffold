@@ -191,10 +191,7 @@ def run(args):
             module.create_directories()
             module.create_base_files()
         elif args['action'] == 'create':
-            module.create_main_directory()
-            module.create_directories()
-            module.create_base_files()
-
+            module.create()
         elif args['action'] == 'append':
             module.create_py_files(args['append_file'], args['file_name'])
 
