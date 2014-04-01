@@ -187,9 +187,7 @@ def run(args):
                 args['oerp_version'], args['destination_folder'])
             branch.create_branch()
             module.update_path(branch)
-            module.create_main_directory()
-            module.create_directories()
-            module.create_base_files()
+            module.create()
         elif args['action'] == 'create':
             module.create()
         elif args['action'] == 'append':
