@@ -206,13 +206,15 @@ class Module(object):
         print ' ----- Updating the module path', self.path
         return True
 
-    def create(self):
+    def create(self, branch_obj=None):
         """
         This method create a new module, This implies create the main
         directory, create the intern module directories and add the basic files
         like the module descriptor, the init files and the module icon.
         @return True
         """
+        if branch_obj:
+            self.update_path(branch_obj)
         self.create_main_directory()
         self.create_directories()
         self.create_base_files()

@@ -186,8 +186,7 @@ def run(args):
                 module_obj, args['branch_suffix'], args['parent_repo'],
                 args['oerp_version'], args['destination_folder'])
             branch_obj.create_branch()
-            module_obj.update_path(branch_obj)
-            module_obj.create()
+            module_obj.create(branch_obj)
         elif args['action'] == 'create':
             module_obj.create()
         elif args['action'] == 'append':
