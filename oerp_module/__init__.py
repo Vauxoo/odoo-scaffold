@@ -190,7 +190,7 @@ def run(args):
         elif args['action'] == 'create':
             module_obj.create()
         elif args['action'] == 'append':
-            module_obj.create_py_files(args['append_file'], args['file_name'])
+            module_obj.append(args['append_file'], args['file_name'])
 
         #~ module_obj.branch_changes_apply()
     return True

@@ -158,8 +158,9 @@ class Module(object):
         os.system('touch %s/static/description/index.html' % (self.path,))
         return True
 
-    def create_py_files(self, file_py, file_name):
+    def append(self, file_py, file_name):
         """
+        Note: Only working for py files.
         """
         print '... Create the model and wirzard py files'
         edit_folder = '/'.join([self.path, file_py])
