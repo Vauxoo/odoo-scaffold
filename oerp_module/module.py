@@ -219,11 +219,13 @@ class Module(object):
         print '... Adding initial data files (using csv2xml)'
 
         # create csv src folder into the module folder
+        print '... Copy the source csv into the module data folder'
         self.csv_dir = os.path.join(self.path, 'data/csv_data') 
         os.system('mkdir %s' % (self.csv_dir,))
         os.system('cp %s/* %s -r' % (self.init_data, self.csv_dir))
 
         # generate xml data
+        print '... Generating the xml data files'
         args = dict(
             action='update',
             module_name=self.path,
@@ -231,7 +233,8 @@ class Module(object):
             company_name=self.company_name)
         csv2xml.run(args)
 
-        #update the module descriptor.
+        # update the module descriptor.
+        print '... Update the module descriptor with new data'
         file_path = os.path.join(self.path, '__openerp__.py')
         fr = open(file_path, 'r')
         file_str = fr.read()
@@ -241,6 +244,15 @@ class Module(object):
         fw = open(file_path, 'w')
         fw.write(file_str)
         fw.close()
+
+        # Add the tests 
+        print '... Adding the tests for the init data'
+        tests_dir = os.path.join(self.path, 'tests') 
+        os.system('mkdir {}'.format(tests_dir))
+        self.create_file('tests__init__.py', '__init__.py', 'tests')
+        self.create_file(
+            'test_init_data_integrity.py', 'test_init_data_integrity.py',
+            'tests')
         return True
 
     def get_str_data(self):
