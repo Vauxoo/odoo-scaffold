@@ -140,7 +140,7 @@ class Module(object):
         }
 
         for (var, val) in var_value_dict.iteritems():
-            os.system('sed -i \'s/%s/%s/g\' %s' % (var, val, new_file_full_path))
+            self.update_file(var, val, new_file_full_path)
         print ' ----- new.file', new_file_full_path
         return True
 
@@ -216,7 +216,7 @@ class Module(object):
         Use the self.init_data (directory of a csv template folder) to generate
         and automatic add the data into the new module.
         """
-        print '... Adding initial data files (using csv2xml'
+        print '... Adding initial data files (using csv2xml)'
 
         # create csv src folder into the module folder
         self.csv_dir = os.path.join(self.path, 'data/csv_data') 
@@ -260,7 +260,6 @@ class Module(object):
         str_data = '\'data\': [%s]' % (str_data)
         return str_data
 
-    # TODO: Not used yet.
     def update_file(self, var, val, file_path):
         """
         Update a file replace the 'var' with a given 'value' at the file hold
@@ -271,7 +270,6 @@ class Module(object):
         @return: True
         """
         os.system('sed -i \'s/%s/%s/g\' %s' % (var, val, file_path))
-        print ' ----- modificated', file_path
         return True
 
     def create(self, branch_obj=None):
