@@ -54,6 +54,12 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         type=dir_full_path,
         help=('path where the csv data it is. Note: This options depends on'
               ' the csv2xml python module'))
+    create_paser.add_argument(
+        '--company-name',
+        metavar='COMPANY_NAME',
+        type=str,
+        help=('Used for the creating of on the fly csv records with a custom'
+              ' xml id with the company prefix (required for csv2xml)'))
 
     # create sub parser for branch action
     branch_parser = subparsers.add_parser(
@@ -118,7 +124,17 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         help='List the configurate repositories.')
 
     argcomplete.autocomplete(parser)
-    return parser.parse_args(args=args_list).__dict__
+    args = parser.parse_args(args=args_list)
+    check_inclusive_args(args)
+    return args.__dict__
+
+def check_inclusive_args(args):
+    """
+    Check the Inclusive arguments and introduce a parser error.
+    """
+    if args.add_init_data and not args.company_name:
+        parser.error(' the --add-init-data requires --company-name option.')
+    return True
 
 def add_common_options(subparser, my_config):
     """
@@ -179,8 +195,8 @@ def run(args):
         module_obj = Module(
             args['module_name'], args['module_developers'],
             args['module_planners'],
-            args['module_auditors'], folder=args['destination_folder'])
-
+            args['module_auditors'], folder=args['destination_folder'],
+            init_data=args['add_init_data'], company_name=args['company_name'])
         if args['action'] == 'branch':
             branch_obj = Branch(
                 module_obj, args['branch_suffix'], args['parent_repo'],

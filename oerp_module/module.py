@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import os
 import sys
+import csv2xml.csv2xml as csv2xml
 from config import *
 
 
@@ -28,7 +29,8 @@ class Module(object):
         'static/src/img']
 
     def __init__(self, name, module_developers, module_planners,
-                 module_auditors, folder=None):
+                 module_auditors, folder=None, init_data=None,
+                 company_name=None):
         """
         iniciialization of the module
         @param name: new module name
@@ -43,6 +45,8 @@ class Module(object):
         self.module_developers = module_developers
         self.module_planners = module_planners
         self.module_auditors = module_auditors
+        self.init_data = init_data
+        self.company_name = company_name
 
         #print ' ====== module object '
         #import pprint
@@ -207,6 +211,69 @@ class Module(object):
         print ' ----- Updating the module path', self.path
         return True
 
+    def add_init_data(self):
+        """
+        Use the self.init_data (directory of a csv template folder) to generate
+        and automatic add the data into the new module.
+        """
+        print '... Adding initial data files (using csv2xml'
+
+        # create csv src folder into the module folder
+        self.csv_dir = os.path.join(self.path, 'data/csv_data') 
+        os.system('mkdir %s' % (self.csv_dir,))
+        os.system('cp %s/* %s -r' % (self.init_data, self.csv_dir))
+
+        # generate xml data
+        args = dict(
+            action='update',
+            module_name=self.path,
+            csv_dir=self.init_data,
+            company_name=self.company_name)
+        csv2xml.run(args)
+
+        #update the module descriptor.
+        file_path = os.path.join(self.path, '__openerp__.py')
+        fr = open(file_path, 'r')
+        file_str = fr.read()
+        fr.close()
+        str_data = self.get_str_data()
+        file_str = file_str.replace('\'data\': []', str_data)
+        fw = open(file_path, 'w')
+        fw.write(file_str)
+        fw.close()
+        return True
+
+    def get_str_data(self):
+        """
+        @return a string with the new value of the 'data' key in the
+        descriptor file. 
+        """
+        data_dir = os.path.join(self.path, 'data') 
+        str_data = str()
+        data_files = [
+            os.path.join('data', f) for f in os.listdir(data_dir)
+            if os.path.isfile(os.path.join(data_dir, f))]
+
+        for elem in data_files:
+            str_data += '\n        \'%s\',' % (elem)
+        str_data = str_data[:-1]
+        str_data = '\'data\': [%s]' % (str_data)
+        return str_data
+
+    # TODO: Not used yet.
+    def update_file(self, var, val, file_path):
+        """
+        Update a file replace the 'var' with a given 'value' at the file hold
+        in 'file_path'.
+        @param var: name of the variable to be replace
+        @param val: value to be place.
+        @param file_path: full path of the file that it going to be updated.
+        @return: True
+        """
+        os.system('sed -i \'s/%s/%s/g\' %s' % (var, val, file_path))
+        print ' ----- modificated', file_path
+        return True
+
     def create(self, branch_obj=None):
         """
         This method create a new module, This implies create the main
@@ -219,4 +286,5 @@ class Module(object):
         self.create_main_directory()
         self.create_directories()
         self.create_base_files()
+        self.init_data and self.add_init_data()
         return True
