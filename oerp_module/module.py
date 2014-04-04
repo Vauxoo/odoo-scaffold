@@ -241,6 +241,8 @@ class Module(object):
         fr.close()
         str_data = self.get_str_data()
         file_str = file_str.replace('\'data\': []', str_data)
+        str_depends = self.get_str_depends()
+        file_str = file_str.replace('\'depends\': []', str_depends)
         fw = open(file_path, 'w')
         fw.write(file_str)
         fw.close()
@@ -270,6 +272,19 @@ class Module(object):
             str_data += '\n        \'%s\',' % (elem)
         str_data = str_data[:-1]
         str_data = '\'data\': [%s]' % (str_data)
+        return str_data
+
+    def get_str_depends(self):
+        """
+        @return a string with the new value of the 'depends' key in the
+        descriptor file
+        """
+        data_dir = os.path.join(self.path, 'data') 
+        str_data = str()
+        for elem in ['base', 'stock', 'ovl']:
+            str_data += '\n        \'%s\',' % (elem)
+        str_data = str_data[:-1]
+        str_data = '\'depends\': [%s]' % (str_data)
         return str_data
 
     def update_file(self, var, val, file_path):
