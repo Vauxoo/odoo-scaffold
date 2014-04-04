@@ -7,7 +7,7 @@ class TestInitData(TransactionCase):
     """
 
     def setUp(self):
-        super(TestRequisitions, self).setUp()
+        super(TestInitData, self).setUp()
         self.imd_obj = self.registry('ir.model.data')
             #'ir.model.data' model: (id, name, module, model, res_id)
 
