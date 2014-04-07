@@ -1,5 +1,6 @@
 from openerp.tests.common import TransactionCase
 import csv
+import os 
 
 class TestInitData(TransactionCase):
     """
@@ -28,8 +29,12 @@ class TestInitData(TransactionCase):
         for csv_file in data_obj.csv_list:
             #print ' --- Checking the \'%s\' file' % (csv_file,)
             csv_lines = data_obj.read_csv_file(csv_file)
-            for line in csv_lines:
 
+            print_list = ['csv_file', 'csv_lines']
+            for elm in print_list:
+                print ' ---- ', elm, eval(elm)
+
+            for line in csv_lines:
                 record_xml_id = line[0].split('.')[-1]
                 imd_id = self.imd_obj.search(
                     cr, uid,
@@ -41,7 +46,8 @@ class TestInitData(TransactionCase):
 
                 # check is the data in the csv files were loaded in the
                 # openerp current instance
-
+                
+                print 'record data imd_id', record_data['imd_id']
                 self.assertEquals(
                     record_data['imd_id'], True,
                     load_err_msg.format(**record_data))
@@ -65,11 +71,22 @@ class data_integrity(object):
         file and save the csv file names list to check.
         @return None
         """
-        print ' --- read config file.'
-        f = open('config', 'r')
-        self.csv_list = f.read().splitlines()
-        f.close()
+        module_path = os.path.split(os.path.split(__file__)[0])[0]
+        csv_path = os.path.join(module_path, 'data/csv_data')
+        csv_files = list()
+        for root, dirs, files in os.walk(csv_path):
+            for f in files:
+                if f.endswith(".csv"):
+                     csv_files.append(os.path.join(root, f))
+        self.csv_list = csv_files
         return None
+
+
+        for elem in data_files:
+            str_data += '\n        \'%s\',' % (elem)
+        str_data = str_data[:-1]
+        str_data = '\'data\': [%s]' % (str_data)
+        return str_data
 
     def read_csv_file(self, cvs_name):
         """
