@@ -48,6 +48,18 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         'create',
         help='Inicializate module. Create new directory with basic files.')
     create_paser = add_common_options(create_parser, my_config)
+    create_paser.add_argument(
+        '--add-init-data',
+        metavar='CSV_DIR',
+        type=dir_full_path,
+        help=('path where the csv data it is. Note: This options depends on'
+              ' the csv2xml python module'))
+    create_paser.add_argument(
+        '--company-name',
+        metavar='COMPANY_NAME',
+        type=str,
+        help=('Used for the creating of on the fly csv records with a custom'
+              ' xml id with the company prefix (required for csv2xml)'))
 
     # create sub parser for branch action
     branch_parser = subparsers.add_parser(
@@ -112,7 +124,17 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         help='List the configurate repositories.')
 
     argcomplete.autocomplete(parser)
-    return parser.parse_args(args=args_list).__dict__
+    args = parser.parse_args(args=args_list)
+    check_inclusive_args(args)
+    return args.__dict__
+
+def check_inclusive_args(args):
+    """
+    Check the Inclusive arguments and introduce a parser error.
+    """
+    if args.add_init_data and not args.company_name:
+        parser.error(' the --add-init-data requires --company-name option.')
+    return True
 
 def add_common_options(subparser, my_config):
     """
@@ -170,29 +192,23 @@ def run(args):
     if args['action'] == 'config':
         args['list_repositories'] and my_config.print_repositories()
     else:
-        module = Module(
+        module_obj = Module(
             args['module_name'], args['module_developers'],
             args['module_planners'],
-            args['module_auditors'], folder=args['destination_folder'])
-
+            args['module_auditors'], folder=args['destination_folder'],
+            init_data=args['add_init_data'], company_name=args['company_name'])
         if args['action'] == 'branch':
-            branch = Branch(
-                module, args['branch_suffix'], args['parent_repo'],
+            branch_obj = Branch(
+                module_obj, args['branch_suffix'], args['parent_repo'],
                 args['oerp_version'], args['destination_folder'])
-            branch.create_branch()
-            module.update_path(branch)
-            module.create_main_directory()
-            module.create_directories()
-            module.create_base_files()
+            branch_obj.create_branch()
+            module_obj.create(branch_obj)
         elif args['action'] == 'create':
-            module.create_main_directory()
-            module.create_directories()
-            module.create_base_files()
-
+            module_obj.create()
         elif args['action'] == 'append':
-            module.create_py_files(args['append_file'], args['file_name'])
+            module_obj.append(args['append_file'], args['file_name'])
 
-        #~ module.branch_changes_apply()
+        #~ module_obj.branch_changes_apply()
     return True
 
 def confirm_run(args):

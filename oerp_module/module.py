@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import os
 import sys
+import csv2xml.csv2xml as csv2xml
 from config import *
 
 
@@ -28,7 +29,8 @@ class Module(object):
         'static/src/img']
 
     def __init__(self, name, module_developers, module_planners,
-                 module_auditors, folder=None):
+                 module_auditors, folder=None, init_data=None,
+                 company_name=None):
         """
         iniciialization of the module
         @param name: new module name
@@ -43,6 +45,8 @@ class Module(object):
         self.module_developers = module_developers
         self.module_planners = module_planners
         self.module_auditors = module_auditors
+        self.init_data = init_data
+        self.company_name = company_name
 
         #print ' ====== module object '
         #import pprint
@@ -136,7 +140,7 @@ class Module(object):
         }
 
         for (var, val) in var_value_dict.iteritems():
-            os.system('sed -i \'s/%s/%s/g\' %s' % (var, val, new_file_full_path))
+            self.update_file(var, val, new_file_full_path)
         print ' ----- new.file', new_file_full_path
         return True
 
@@ -158,8 +162,9 @@ class Module(object):
         os.system('touch %s/static/description/index.html' % (self.path,))
         return True
 
-    def create_py_files(self, file_py, file_name):
+    def append(self, file_py, file_name):
         """
+        Note: Only working for py files.
         """
         print '... Create the model and wirzard py files'
         edit_folder = '/'.join([self.path, file_py])
@@ -204,4 +209,146 @@ class Module(object):
         """
         self.path = branch_obj.module.path
         print ' ----- Updating the module path', self.path
+        return True
+
+    def add_init_data(self):
+        """
+        Use the self.init_data (directory of a csv template folder) to generate
+        and automatic add the data into the new module.
+        """
+        print '... Adding initial data files (using csv2xml)'
+
+        # create csv src folder into the module folder
+        print '... Copy the source csv into the module data folder'
+        self.csv_dir = os.path.join(self.path, 'data/csv_data') 
+        os.system('mkdir %s' % (self.csv_dir,))
+        os.system('cp %s/* %s -r' % (self.init_data, self.csv_dir))
+
+        # generate xml data
+        print '... Generating the xml data files'
+        args = dict(
+            action='update',
+            module_name=self.path,
+            csv_dir=self.init_data,
+            company_name=self.company_name)
+        csv2xml.run(args)
+
+        # update the module descriptor.
+        print '... Update the module descriptor with new data'
+        update_file = '__openerp__.py'
+        self.hard_update_file(
+            update_file, '\'data\': []', self.get_str_data())
+        self.hard_update_file(
+            update_file, '\'depends\': []', self.get_str_depends())
+        self.hard_update_file(
+            update_file, '\'description\': \'\'\'', self.get_str_description())
+
+        # Add the tests 
+        print '... Adding the tests for the init data'
+        tests_dir = os.path.join(self.path, 'tests') 
+        os.system('mkdir {}'.format(tests_dir))
+        self.create_file('tests__init__.py', '__init__.py', 'tests')
+        self.create_file(
+            'test_init_data_integrity.py', 'test_init_data_integrity.py',
+            'tests')
+        return True
+
+    def hard_update_file(self, update_file, cr_str, rpl_str):
+        """
+        Read a file, get the string version of it, and then replace once
+        portion of the string with another one and overwrite the file with this
+        new change.
+        @param update_file: the name of the file to change.
+        @param cr_str: current string.
+        @param rpl_str: the replacement string.
+        @return True
+        """
+        file_path = os.path.join(self.path, update_file)
+        with open(file_path, 'r') as f:
+            file_str = f.read()
+        file_str = file_str.replace(cr_str, rpl_str)
+        with open(file_path, 'w') as f:
+            f.write(file_str)
+        return True
+
+    def get_str_data(self):
+        """
+        @return a string with the new value of the 'data' key in the
+        descriptor file. 
+        """
+        data_dir = os.path.join(self.path, 'data') 
+        str_data = str()
+        data_files = [
+            os.path.join('data', f) for f in os.listdir(data_dir)
+            if os.path.isfile(os.path.join(data_dir, f))]
+
+        for elem in data_files:
+            str_data += '\n        \'%s\',' % (elem)
+        str_data = str_data[:-1]
+        str_data = '\'data\': [%s]' % (str_data)
+        return str_data
+
+    def get_str_depends(self):
+        """
+        @return a string with the new value of the 'depends' key in the
+        descriptor file
+        """
+        data_dir = os.path.join(self.path, 'data') 
+        str_data = str()
+        for elem in ['base', 'stock', 'ovl']:
+            str_data += '\n        \'%s\',' % (elem)
+        str_data = str_data[:-1]
+        str_data = '\'depends\': [%s]' % (str_data)
+        return str_data
+
+    def get_str_description(self):
+        """
+        @return a string with the new value of the 'description' key in the
+        module descriptor file.
+        """
+        data = {'description':
+            ('This module is a initialization module that have xml data.\n'
+             'To test if the xml data was correctly installed in your db\n'
+             'we have created a fast_suite test.\n'
+             'This test will be run automatically when your module is installed\n' 
+             'in your data base if you are using openerp trunk version.\n'
+             'If not, then you must to run the test manually after your\n'
+             'module is installed by runing this command::\n\n'
+
+             '    oe run-tests -m <module-name> -d <db-name> -tests --addons=\n'
+             '    /path/to/openerp-addons,/path/to/openerp-web/addons,\n'
+             '    /path/to/your-another-required-addons\n\n'
+
+             'Note: For more information go to\n'
+             'https://doc.openerp.com/trunk/server/05_test_framework/'
+            )
+        }
+        str_data = '\'description\': \'\'\'\n{description}'.format(**data)
+        return str_data
+
+    def update_file(self, var, val, file_path):
+        """
+        Update a file replace the 'var' with a given 'value' at the file hold
+        in 'file_path'.
+        @param var: name of the variable to be replace
+        @param val: value to be place.
+        @param file_path: full path of the file that it going to be updated.
+        @return: True
+        """
+        os.system('sed -i \'s/%s/%s/g\' %s' % (var, val, file_path))
+        return True
+
+    def create(self, branch_obj=None):
+        """
+        This method create a new module, This implies create the main
+        directory, create the intern module directories and add the basic files
+        like the module descriptor, the init files and the module icon.
+        @return True
+        """
+        if branch_obj:
+            self.update_path(branch_obj)
+        self.create_main_directory()
+        self.create_directories()
+        self.create_base_files()
+        self.init_data and self.add_init_data()
         return True
