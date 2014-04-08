@@ -240,6 +240,8 @@ class Module(object):
             update_file, '\'data\': []', self.get_str_data())
         self.hard_update_file(
             update_file, '\'depends\': []', self.get_str_depends())
+        self.hard_update_file(
+            update_file, '\'description\': \'\'\'', self.get_str_description())
 
         # Add the tests 
         print '... Adding the tests for the init data'
@@ -297,6 +299,31 @@ class Module(object):
             str_data += '\n        \'%s\',' % (elem)
         str_data = str_data[:-1]
         str_data = '\'depends\': [%s]' % (str_data)
+        return str_data
+
+    def get_str_description(self):
+        """
+        @return a string with the new value of the 'description' key in the
+        module descriptor file.
+        """
+        data = {'description':
+            ('This module is a initialization module that have xml data.\n'
+             'To test if the xml data was correctly installed in your db\n'
+             'we have created a fast_suite test.\n'
+             'This test will be run automatically when your module is installed\n' 
+             'in your data base if you are using openerp trunk version.\n'
+             'If not, then you must to run the test manually after your\n'
+             'module is installed by runing this command::\n\n'
+
+             '    oe run-tests -m <module-name> -d <db-name> -tests --addons=\n'
+             '    /path/to/openerp-addons,/path/to/openerp-web/addons,\n'
+             '    /path/to/your-another-required-addons\n\n'
+
+             'Note: For more information go to\n'
+             'https://doc.openerp.com/trunk/server/05_test_framework/'
+            )
+        }
+        str_data = '\'description\': \'\'\'\n{description}'.format(**data)
         return str_data
 
     def update_file(self, var, val, file_path):
