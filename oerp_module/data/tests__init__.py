@@ -1,5 +1,5 @@
 from . import test_init_data_integrity
 
-checks = [
+fast_suite = [
     test_init_data_integrity,
 ]

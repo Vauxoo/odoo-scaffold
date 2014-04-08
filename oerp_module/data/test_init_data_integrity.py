@@ -19,20 +19,12 @@ class TestInitData(TransactionCase):
         """
         cr, uid = self.cr, self.uid
         data_obj = data_integrity() 
-        load_err_msg = ('The record (model {model}, xml_id {xml_id}) was not'
-            'loaded\n')
-        save_err_msg = ('The record loaded by (model {model}, xml_id {xml_id}'
-            ' have been deleted.')
+        load_err_msg = ('The record {xml_id} ({model}) was not loaded.')
 
         # get a list of the record data
-        record_data = list()
+        record_data = dict()
         for csv_file in data_obj.csv_list:
-            #print ' --- Checking the \'%s\' file' % (csv_file,)
             csv_lines = data_obj.read_csv_file(csv_file)
-
-            print_list = ['csv_file', 'csv_lines']
-            for elm in print_list:
-                print ' ---- ', elm, eval(elm)
 
             for line in csv_lines:
                 record_xml_id = line[0].split('.')[-1]
@@ -40,24 +32,17 @@ class TestInitData(TransactionCase):
                     cr, uid,
                     [('model', '=', line[1]), ('name', '=', record_xml_id)])
 
-                record_data.append(dict(
+                record_data.update(
                     model=line[1], xml_id=line[0], name=record_xml_id,
-                    imd_id=imd_id))
+                    imd_id=imd_id)
 
                 # check is the data in the csv files were loaded in the
                 # openerp current instance
-                
-                print 'record data imd_id', record_data['imd_id']
+
                 self.assertEquals(
-                    record_data['imd_id'], True,
+                    bool(record_data['imd_id']), True,
                     load_err_msg.format(**record_data))
 
-                # check that the inital data records were delete or still
-                # remains in openerp.
-
-                self.assertEquals(
-                    imd_obj.exists(cr, uid, record_data['imd_id']), 
-                    True, load_err_msg.format(**record_data))
 
 class data_integrity(object):
 
@@ -80,13 +65,6 @@ class data_integrity(object):
                      csv_files.append(os.path.join(root, f))
         self.csv_list = csv_files
         return None
-
-
-        for elem in data_files:
-            str_data += '\n        \'%s\',' % (elem)
-        str_data = str_data[:-1]
-        str_data = '\'data\': [%s]' % (str_data)
-        return str_data
 
     def read_csv_file(self, cvs_name):
         """
