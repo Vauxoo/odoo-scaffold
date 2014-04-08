@@ -235,17 +235,11 @@ class Module(object):
 
         # update the module descriptor.
         print '... Update the module descriptor with new data'
-        file_path = os.path.join(self.path, '__openerp__.py')
-        fr = open(file_path, 'r')
-        file_str = fr.read()
-        fr.close()
-        str_data = self.get_str_data()
-        file_str = file_str.replace('\'data\': []', str_data)
-        str_depends = self.get_str_depends()
-        file_str = file_str.replace('\'depends\': []', str_depends)
-        fw = open(file_path, 'w')
-        fw.write(file_str)
-        fw.close()
+        update_file = '__openerp__.py'
+        self.hard_update_file(
+            update_file, '\'data\': []', self.get_str_data())
+        self.hard_update_file(
+            update_file, '\'depends\': []', self.get_str_depends())
 
         # Add the tests 
         print '... Adding the tests for the init data'
@@ -255,6 +249,24 @@ class Module(object):
         self.create_file(
             'test_init_data_integrity.py', 'test_init_data_integrity.py',
             'tests')
+        return True
+
+    def hard_update_file(self, update_file, cr_str, rpl_str):
+        """
+        Read a file, get the string version of it, and then replace once
+        portion of the string with another one and overwrite the file with this
+        new change.
+        @param update_file: the name of the file to change.
+        @param cr_str: current string.
+        @param rpl_str: the replacement string.
+        @return True
+        """
+        file_path = os.path.join(self.path, update_file)
+        with open(file_path, 'r') as f:
+            file_str = f.read()
+        file_str = file_str.replace(cr_str, rpl_str)
+        with open(file_path, 'w') as f:
+            f.write(file_str)
         return True
 
     def get_str_data(self):
