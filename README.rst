@@ -58,16 +58,10 @@ To add a model or wizard file go inside youre module directory and run::
 Uninstall
 ---------
 
-To Uninstall the module you need to re install the module and use the --record
-option save the installed files in a new txt file. Like this::
-    
-    $ sudo python setup.py install --record unistall-files.txt
+In the install folder there is a uninstall file. This is an executable file.
+Just run in your console::
 
-Then you need to manually remove all the installed files. For this task you
-cant use the next command::
+    $ sudo ./uninstall
 
-    $ sudo su
-    # cd <carpeta-modulo-python>
-    # cat unistall-files.txt | xargs rm -rf
-    # exit
-    $ rm unistall-files.txt
+If the file have not excecution permissions then just change the file
+permissions (chmod) and execute the above command.

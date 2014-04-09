@@ -9,6 +9,16 @@ except ImportError:
     # 2.x
     from distutils.command.build_py import build_py
 
+try:
+    import os
+    import argparse
+    import argcomplete
+    import pprint
+    import sys
+    import csv2xml
+except ImportError, e:
+    raise Exception("{}. You must install the missed python module to use oerpmodule module.".format(e)) 
+
 cmdclass = {'build_py': build_py}
 command_options = {}
 
