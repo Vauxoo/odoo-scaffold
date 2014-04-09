@@ -67,7 +67,7 @@ Then you need to manually remove all the installed files. For this task you
 cant use the next command::
 
     $ sudo su
-    # cd <carpeta-modulo-python>
+    # cd <oerpmodule-python-install-folder>
     # cat unistall-files.txt | xargs rm -rf
     # exit
     $ rm unistall-files.txt
