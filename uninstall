@@ -15,5 +15,5 @@ whereis oerpmodule >/dev/null
 
 #echo $?
 if [[ $? == 1 ]]; then
-    echo "Error: the openerp module was not uninstalled."
+    echo "Error: the oerpmodule was not uninstalled."
 fi
