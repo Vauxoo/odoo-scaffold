@@ -237,10 +237,6 @@ class Module(object):
         print '... Update the module descriptor with new data'
         update_file = '__openerp__.py'
         self.hard_update_file(
-            update_file, '\'data\': []', self.get_str_data())
-        self.hard_update_file(
-            update_file, '\'depends\': []', self.get_str_depends())
-        self.hard_update_file(
             update_file, '\'description\': \'\'\'', self.get_str_description())
 
         # Add the tests 
@@ -270,23 +266,6 @@ class Module(object):
         with open(file_path, 'w') as f:
             f.write(file_str)
         return True
-
-    def get_str_data(self):
-        """
-        @return a string with the new value of the 'data' key in the
-        descriptor file. 
-        """
-        data_dir = os.path.join(self.path, 'data') 
-        str_data = str()
-        data_files = [
-            os.path.join('data', f) for f in os.listdir(data_dir)
-            if os.path.isfile(os.path.join(data_dir, f))]
-
-        for elem in data_files:
-            str_data += '\n        \'%s\',' % (elem)
-        str_data = str_data[:-1]
-        str_data = '\'data\': [%s]' % (str_data)
-        return str_data
 
     def get_str_depends(self):
         """
