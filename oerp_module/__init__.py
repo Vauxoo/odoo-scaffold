@@ -132,7 +132,7 @@ def check_inclusive_args(args):
     """
     Check the Inclusive arguments and introduce a parser error.
     """
-    if args.add_init_data and not args.company_name:
+    if args.action == 'create' and args.add_init_data and not args.company_name:
         parser.error(' the --add-init-data requires --company-name option.')
     return True
 
@@ -196,7 +196,8 @@ def run(args):
             args['module_name'], args['module_developers'],
             args['module_planners'],
             args['module_auditors'], folder=args['destination_folder'],
-            init_data=args['add_init_data'], company_name=args['company_name'])
+            init_data=args.get('add_init_data', False),
+            company_name=args.get('company_name',False))
         if args['action'] == 'branch':
             branch_obj = Branch(
                 module_obj, args['branch_suffix'], args['parent_repo'],
