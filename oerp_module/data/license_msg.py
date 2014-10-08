@@ -4,7 +4,8 @@
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
 #    All Rights Reserved
-############# Credits #########################################################
+###############################################################################
+#    Credits:
 #    Coded by: __OERPMODULE_MODULE_DEVELOPERS__
 #    Planified by: __OERPMODULE_MODULE_PLANNERS__
 #    Audited by: __OERPMODULE_MODULE_AUDITORS__
