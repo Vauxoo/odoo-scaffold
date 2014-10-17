@@ -179,7 +179,7 @@ class Module(object):
             '.'.join([file_name, 'py']),
             file_py)
 
-        print '... Add it to the correspond iniy file.'
+        print '... Add it to the correspond init file.'
         os.system('echo """from . import %s""" >> %s' % (
             file_name, init_file_full_path))
         print ' ----- modified', init_file_full_path
