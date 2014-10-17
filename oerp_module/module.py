@@ -116,20 +116,20 @@ class Module(object):
         data_dir = "/".join([this_dir, 'data'])
         file_dir = file_dir and '/'.join([self.path, file_dir]) or self.path
         new_file_full_path = '/'.join([file_dir, new_file])
-        
+
         template_file = \
             template_name and '/'.join([data_dir, template_name]) or ''
 
 #        print 'this_dir', this_dir
-#        print 'data_dir', data_dir 
-#        print 'file_dir', file_dir 
+#        print 'data_dir', data_dir
+#        print 'file_dir', file_dir
 #        print 'new_file', new_file_full_path
 #        print 'template', template_name
 #        print 'template_file', template_file
 
         os.system("cat %s/license_msg.py %s > %s" % (
             data_dir, template_file, new_file_full_path))
-        file_name = getattr(self, 'file_name', '__NO_DEFINED__') 
+        file_name = getattr(self, 'file_name', '__NO_DEFINED__')
         var_value_dict = {
             '__OERPMODULE_CLASS_NAME__': file_name,
             '__OERPMODULE_MODEL_NAME__': file_name.replace('_', '.'),
@@ -179,8 +179,8 @@ class Module(object):
             '.'.join([file_name, 'py']),
             file_py)
 
-        print '... Add it to the correspond iniy file.'
-        os.system('echo """import %s""" >> %s' % (
+        print '... Add it to the correspond init file.'
+        os.system('echo """from . import %s""" >> %s' % (
             file_name, init_file_full_path))
         print ' ----- modified', init_file_full_path
         return True
@@ -220,7 +220,7 @@ class Module(object):
 
         # create csv src folder into the module folder
         print '... Copy the source csv into the module data folder'
-        self.csv_dir = os.path.join(self.path, 'data/csv_data') 
+        self.csv_dir = os.path.join(self.path, 'data/csv_data')
         os.system('mkdir %s' % (self.csv_dir,))
         os.system('cp %s/* %s -r' % (self.init_data, self.csv_dir))
 
@@ -239,9 +239,9 @@ class Module(object):
         self.hard_update_file(
             update_file, '\'description\': \'\'\'', self.get_str_description())
 
-        # Add the tests 
+        # Add the tests
         print '... Adding the tests for the init data'
-        tests_dir = os.path.join(self.path, 'tests') 
+        tests_dir = os.path.join(self.path, 'tests')
         os.system('mkdir {}'.format(tests_dir))
         self.create_file('tests__init__.py', '__init__.py', 'tests')
         self.create_file(
@@ -272,7 +272,7 @@ class Module(object):
         @return a string with the new value of the 'depends' key in the
         descriptor file
         """
-        data_dir = os.path.join(self.path, 'data') 
+        data_dir = os.path.join(self.path, 'data')
         str_data = str()
         for elem in ['base', 'stock', 'ovl']:
             str_data += '\n        \'%s\',' % (elem)
@@ -289,7 +289,7 @@ class Module(object):
             ('This module is a initialization module that have xml data.\n'
              'To test if the xml data was correctly installed in your db\n'
              'we have created a fast_suite test.\n'
-             'This test will be run automatically when your module is installed\n' 
+             'This test will be run automatically when your module is installed\n'
              'in your data base if you are using openerp trunk version.\n'
              'If not, then you must to run the test manually after your\n'
              'module is installed by runing this command::\n\n'
