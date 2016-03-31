@@ -1,6 +1,7 @@
 from openerp.tests.common import TransactionCase
 import csv
-import os 
+import os
+
 
 class TestInitData(TransactionCase):
     """
@@ -10,7 +11,7 @@ class TestInitData(TransactionCase):
     def setUp(self):
         super(TestInitData, self).setUp()
         self.imd_obj = self.registry('ir.model.data')
-            #'ir.model.data' model: (id, name, module, model, res_id)
+        # 'ir.model.data' model: (id, name, module, model, res_id)
 
     def test_init_data(self):
         """
@@ -18,7 +19,7 @@ class TestInitData(TransactionCase):
         the xml id in the openerp data base in table ir.model.data
         """
         cr, uid = self.cr, self.uid
-        data_obj = data_integrity() 
+        data_obj = data_integrity()
         load_err_msg = ('The record {xml_id} ({model}) was not loaded.')
 
         # get a list of the record data
@@ -62,7 +63,7 @@ class data_integrity(object):
         for root, dirs, files in os.walk(csv_path):
             for f in files:
                 if f.endswith(".csv"):
-                     csv_files.append(os.path.join(root, f))
+                    csv_files.append(os.path.join(root, f))
         self.csv_list = csv_files
         return None
 
@@ -76,4 +77,4 @@ class data_integrity(object):
         for line in csv_lines:
             # ditionary with the {field name: field value,}
             lines += [(line.pop('id'), line.pop('model'))]
-        return lines[1:] 
+        return lines[1:]

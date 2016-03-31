@@ -1,23 +1,17 @@
 #!/usr/bin/python
 import os
-import sys
 import csv2xml.csv2xml as csv2xml
-from config import *
 
 
 class Module(object):
 
     directory_list = [
-        'model',
-        'view',
-        'wizard',
-        'i18n',
-        'workflow',
+        'models',
+        'views',
+        'wizards',
         'data',
         'demo',
-        'doc',
-        'doc/images',
-        'test',
+        'tests',
         'report',
         'security',
         'static',
@@ -36,7 +30,7 @@ class Module(object):
         @param name: new module name
         """
 
-        #~ TODO: add the manage a list of developers, planners and auditors
+        # ~ TODO: add the manage a list of developers, planners and auditors
 
         print '\n... Checking Script Parameters'
         self.name = name.split('/')[-1]
@@ -48,11 +42,10 @@ class Module(object):
         self.init_data = init_data
         self.company_name = company_name
 
-        #print ' ====== module object '
-        #import pprint
-        #pprint.pprint(self.__dict__)
+        # print ' ====== module object '
+        # import pprint
+        # pprint.pprint(self.__dict__)
         return None
-
 
     def create_main_directory(self):
         """
@@ -67,7 +60,7 @@ class Module(object):
         Create the base directories taking into account the directory config
         list.
         """
-        print '... Create module structure dicectories'
+        print '... Create module structure directories'
         for strc_dir in self.directory_list:
             os.system('mkdir %s/%s' % (self.path, strc_dir))
         return True
@@ -91,8 +84,8 @@ class Module(object):
         """
         print '... Creating init files'
         self.create_file('__init__.py', '__init__.py', False)
-        self.create_file(False, '__init__.py', 'model')
-        self.create_file(False, '__init__.py', 'wizard')
+        self.create_file(False, '__init__.py', 'models')
+        self.create_file(False, '__init__.py', 'wizards')
         return True
 
     def create_openerp_file(self):
@@ -150,7 +143,8 @@ class Module(object):
         """
         print '... Adding module icon'
         this_dir, this_filename = os.path.split(__file__)
-        os.system('cp %s/data/icon.png %s/static/src/img/' % (this_dir, self.path))
+        os.system('cp %s/data/icon.png %s/static/src/img/' % (this_dir,
+                                                              self.path))
         return True
 
     def create_index_html_file(self):
@@ -175,7 +169,7 @@ class Module(object):
 #        print 'file_py', file_py
 #        print 'file_name', file_name
         self.create_file(
-            '.'.join([file_py,'py']),
+            '.'.join([file_py, 'py']),
             '.'.join([file_name, 'py']),
             file_py)
 
@@ -194,9 +188,9 @@ class Module(object):
 
         license_msg = self.template.license_msg
 
-        #~ developer_str = 'Katherine Zaoral <kathy@vauxoo.com>'
-        #~ planner_str = 'Humberto Arocha <hbto@vauxoo.com>'
-        #~ auditor_str = 'Humberto Arocha <hbto@vauxoo.com>'
+        # ~ developer_str = 'Katherine Zaoral <kathy@vauxoo.com>'
+        # ~ planner_str = 'Humberto Arocha <hbto@vauxoo.com>'
+        # ~ auditor_str = 'Humberto Arocha <hbto@vauxoo.com>'
 
         return license_msg % (
             module_developers, module_planners, module_auditors)
@@ -272,7 +266,7 @@ class Module(object):
         @return a string with the new value of the 'depends' key in the
         descriptor file
         """
-        data_dir = os.path.join(self.path, 'data')
+        # data_dir = os.path.join(self.path, 'data')
         str_data = str()
         for elem in ['base', 'stock', 'ovl']:
             str_data += '\n        \'%s\',' % (elem)
@@ -285,22 +279,23 @@ class Module(object):
         @return a string with the new value of the 'description' key in the
         module descriptor file.
         """
-        data = {'description':
+        data = {
+            'description':
             ('This module is a initialization module that have xml data.\n'
              'To test if the xml data was correctly installed in your db\n'
              'we have created a fast_suite test.\n'
-             'This test will be run automatically when your module is installed\n'
-             'in your data base if you are using openerp trunk version.\n'
+             'This test will be run automatically when your module is\n'
+             'installed in your data base if you are using Odoo trunk\n'
+             'version.\n'
              'If not, then you must to run the test manually after your\n'
              'module is installed by runing this command::\n\n'
 
-             '    oe run-tests -m <module-name> -d <db-name> -tests --addons=\n'
-             '    /path/to/openerp-addons,/path/to/openerp-web/addons,\n'
-             '    /path/to/your-another-required-addons\n\n'
+             '   oe run-tests -m <module-name> -d <db-name> -tests --addons=\n'
+             '   /path/to/openerp-addons,/path/to/openerp-web/addons,\n'
+             '   /path/to/your-another-required-addons\n\n'
 
              'Note: For more information go to\n'
-             'https://doc.openerp.com/trunk/server/05_test_framework/'
-            )
+             'https://doc.openerp.com/trunk/server/05_test_framework/')
         }
         str_data = '\'description\': \'\'\'\n{description}'.format(**data)
         return str_data

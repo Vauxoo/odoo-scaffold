@@ -10,10 +10,10 @@ echo "Delete the installed files"
 cat unistall-files.txt | xargs rm -rf
 echo "Delete temporal uninstall process files."
 rm unistall-files.txt
-echo "Check that the oerpmodule was deleted"
-whereis oerpmodule >/dev/null
+echo "Check that the odooscaffold was deleted"
+whereis odooscaffold >/dev/null
 
 #echo $?
 if [[ $? == 1 ]]; then
-    echo "Error: the oerpmodule was not uninstalled."
+    echo "Error: the odooscaffold was not uninstalled."
 fi

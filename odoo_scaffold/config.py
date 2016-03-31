@@ -5,19 +5,21 @@ import pprint
 
 class Repository(object):
 
-    def __init__(self, name, serie, group, local_path, cloud_url=False):
+    def __init__(self, name, serie, group, gdev, local_path, cloud_url=False):
         """
         Inicializate the repository object with the corresponding data
         @param name: name of the repository given for the user.
         @param serie: number of the project serie (the branch of the project
                       to push).
-        @param group: launchpad group with permissions to push to the branch.
+        @param group: github parent owner.
+        @param gdev: github dev owner with permissions to push to the branch.
         @param local_path: the path of your local copy of the repository.
         @param cloud_url: the path of your local copy of the repository.
         """
         self.name = name
         self.serie = serie
         self.group = group
+        self.gdev = gdev
         self.local_path = local_path
         self.cloud_url = cloud_url
         # self.check_repo_local_path()
@@ -29,7 +31,7 @@ class Repository(object):
         """
         if not os.path.exists(self.local_path):
             print ('The %s repository can be used because the local path'
-                   ' given really do no exist.' % (name, ))
+                   ' given really do no exist.' % (self.name, ))
             return False
         return True
 
@@ -38,31 +40,29 @@ class Config(object):
 
     def __init__(self):
         """
-        Create a config Object from openerp module. it set by default the
+        Create a config Object from Odoo module. it set by default the
         repositories
         """
-        self._oerp_version_list = ['6.0', '6.1', '7.0']
+        self._oerp_version_list = ['8.0', '9.0']
         self.repositories = {
             'addons-vauxoo': Repository(
                 name='addons-vauxoo',
-                serie='7.0',
-                group='~vauxoo',
-                local_path='/home/kathy/bzr_projects/addons_vauxoo/7.0'),
-            'vauxoo-private': Repository(
-                name='vauxoo-private',
-                serie=False,
-                group='~vauxoo-private',
-                local_path='/home/kathy/bzr_projects/vauxoo_private'),
-            'ovl70': Repository(
-                name='openerp-venezuela-localization',
-                serie='7.0',
-                group='~vauxoo',
-                local_path='/home/kathy/bzr_projects/_VE/ovl_branches/ovl70'),
-            'junk': Repository(
-                name='+junk',
-                serie='oerpmodule_test',
-                group='~kathy-zaoral',
-                local_path='/home/kathy/bzr_projects/+junk/kathy-zaoral/oerpmodule_test'),
+                serie='8.0',
+                group='vauxoo',
+                gdev='vauxoo-dev',
+                local_path='~/projects/addons_vauxoo'),
+            'odoo-mexico': Repository(
+                name='odoo-mexico',
+                serie="master",
+                group='vauxoo',
+                gdev='vauxoo-dev',
+                local_path='~/projects/odoo-mexico'),
+            'odoo-venezuela': Repository(
+                name='odoo-venezuela',
+                serie="8.0",
+                group='vauxoo',
+                gdev='vauxoo-dev',
+                local_path='~/projects/odoo-venezuela'),
         }
 
     def print_repositories(self):

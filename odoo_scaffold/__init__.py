@@ -1,13 +1,11 @@
-import module
-import config
-import branch 
 from module import Module
 from config import Config
-from branch import Branch 
+from branch import Branch
 
 import os
 import argparse
 import argcomplete
+
 
 def dir_full_path(path):
     """
@@ -22,6 +20,7 @@ def dir_full_path(path):
         raise argparse.ArgumentTypeError(msg)
     return my_path
 
+
 def argument_parser(args_list=None):
     """
     This function create the help command line and manage and filter the
@@ -29,17 +28,17 @@ def argument_parser(args_list=None):
     """
     my_config = Config()
     parser = argparse.ArgumentParser(
-        prog='oerpmodule',
-        description='Create new openerp module structure and basic files.',
+        prog='odooscaffold',
+        description='Create new Odoo module structure and basic files.',
         epilog="""
-Openerp Developer Comunity Tool
-Development by Vauxoo Team (lp:~vauxoo)
+Odoo Developer Comunity Tool
+Development by Vauxoo Team (https://www.github.com/Vauxoo)
 Coded by Katherine Zaoral <kathy@vauxoo.com>.
-Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
+Source code at git@github.com:Vauxoo/odoo-scaffold.git.""",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     subparsers = parser.add_subparsers(
         description=('Valid actions over a module than can be done with'
-            ' oerpmodule.'),
+                     ' odooscaffold.'),
         dest='action',
         help='subcommands help')
 
@@ -65,7 +64,7 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
     branch_parser = subparsers.add_parser(
         'branch',
         help='Create a new module using a branch.')
-    branch_paser = add_common_options(branch_parser, my_config)
+    branch_parser = add_common_options(branch_parser, my_config)
 
     branch_parser.add_argument(
         '-r', '--parent_repo',
@@ -74,10 +73,11 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         required=True,
         choices=my_config.get_repositories_names(),
         help=('The name of repository from will be create the new module. To '
-              'look the repository list use oerpmodule config -l.'))
+              'look the repository list use odooscaffold config -l.'))
 
-    branch_group = branch_parser.add_argument_group('New Branch Name options', (
-        'This way you can configure the new branch name.'))
+    branch_group = branch_parser.add_argument_group(
+        'New Branch Name options', (
+            'This way you can configure the new branch name.'))
 
     branch_group.add_argument(
         '-s', '--branch-suffix',
@@ -91,23 +91,23 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
         metavar='VERSION',
         type=str,
         choices=my_config._oerp_version_list,
-        help='Openerp version number')
+        help='Odoo version number')
 
     branch_parser.set_defaults(
-        oerp_version='7.0',
+        oerp_version='8.0',
         parent_repo='addons-vauxoo')
 
     # create sub parser for append action
     append_parser = subparsers.add_parser(
-        'append', 
+        'append',
         help='Append a file to the module.')
-    append_paser = add_common_options(append_parser, my_config)
+    append_parser = add_common_options(append_parser, my_config)
 
     append_parser.add_argument(
         'append_file',
         metavar='FILE_TYPE',
         type=str,
-        choices=['model', 'wizard'],
+        choices=['models', 'wizards'],
         help='The type of file you want to append.')
     append_parser.add_argument(
         'file_name',
@@ -117,8 +117,8 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
 
     # create sub parser for config action
     config_parser = subparsers.add_parser(
-        'config', 
-        help='Set and check the oerpmodule config')
+        'config',
+        help='Set and check the odooscaffold config')
     config_parser.add_argument(
         '-l', '--list-repositories', action='store_true',
         help='List the configurate repositories.')
@@ -128,13 +128,18 @@ Source code at lp:~katherine-zaoral-7/+junk/oerp_module.""",
     check_inclusive_args(args)
     return args.__dict__
 
+
 def check_inclusive_args(args):
     """
     Check the Inclusive arguments and introduce a parser error.
     """
-    if args.action == 'create' and args.add_init_data and not args.company_name:
-        parser.error(' the --add-init-data requires --company-name option.')
+    if args.action == 'create' and args.add_init_data and \
+            not args.company_name:
+        # parser.error(' the --add-init-data requires --company-name option.')
+        msg = ' the --add-init-data requires --company-name option.'
+        raise argparse.ArgumentTypeError(msg)
     return True
+
 
 def add_common_options(subparser, my_config):
     """
@@ -184,6 +189,7 @@ def add_common_options(subparser, my_config):
         help='name of the folder where to put the module')
     return subparser
 
+
 def run(args):
     """
     run the corresponding action
@@ -197,7 +203,7 @@ def run(args):
             args['module_planners'],
             args['module_auditors'], folder=args['destination_folder'],
             init_data=args.get('add_init_data', False),
-            company_name=args.get('company_name',False))
+            company_name=args.get('company_name', False))
         if args['action'] == 'branch':
             branch_obj = Branch(
                 module_obj, args['branch_suffix'], args['parent_repo'],
@@ -209,8 +215,9 @@ def run(args):
         elif args['action'] == 'append':
             module_obj.append(args['append_file'], args['file_name'])
 
-        #~ module_obj.branch_changes_apply()
+        # ~ module_obj.branch_changes_apply()
     return True
+
 
 def confirm_run(args):
     """
@@ -233,8 +240,8 @@ def confirm_run(args):
             print 'The entry is not valid, please enter y or n.'
     return True
 
+
 def main():
     args = argument_parser()
     confirm_run(args)
     run(args)
-

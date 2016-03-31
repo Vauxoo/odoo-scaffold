@@ -1,30 +1,30 @@
 README
 ======
 
-This module python is a tool to openerp developers that permit to generate a
-new openerp modules from the command line indicating only a few arguments. Some
+This module python is a tool to Odoo developers that permit to generate a
+new Odoo modules from the command line indicating only a few arguments. Some
 features are:
 
- - Create a new openerp module structure and basic files.
+ - Create a new Odoo module structure and basic files.
  - Let to add initial data to a new module (using csv2xml) for company data
-   initilization openerp modules.
- - Let to expand a customize easly your openerp module by append new models and
+   initilization Odoo modules.
+ - Let to expand a customize easly your Odoo module by append new models and
    wizard files.
- - Permit create the openerp module inside an existing launchpad branch. This
-   way you can add youre new module easly to a openerp addons repository
+ - Permit create the Odoo module inside an existing github branch. This
+   way you can add youre new module easly to a Odoo addons repository
    automactly.
 
 This is a practical way to work with a client. The client can create a new
-openerp module to be developed by running this tool time saver and also
+Odoo module to be developed by running this tool time saver and also
 reduce in a big way the human errors.
 
 Download
 --------
 
-This python module is hosted on launchpad.net repository branch. Can be
+This python module is hosted on github repository branch. Can be
 downloaded by running this command::
     
-    bzr branch lp:vauxoo-private/oerpmodule
+    git clone git@github.com:Vauxoo/odoo-scaffold.git
 
 Dependencies
 ------------
@@ -40,7 +40,7 @@ the last versions is this: ``os``, ``argparse``, ``pprint``, ``sys``,
 .. note:: the csv2xml python module is a special module, you can get a copy by
    runing this consola command::
 
-        bzr branch lp:vauxoo-private/csv2xml
+        git clone git@github.com:Vauxoo/csv2xml.git
 
 Install
 -------
@@ -53,7 +53,7 @@ this command::
 Now check that the package was correctly installed by running this command that
 will display the script options::
 
-    $ oerpmodule --help
+    $ odooscaffold --help
     Valid actions over a module than can be done with oerpmodule.
       
     {create,branch,append,config}
@@ -62,17 +62,17 @@ will display the script options::
                           files.
       branch              Create a new module using a branch.
       append              Append a file to the module.
-      config              Set and check the oerpmodule config
+      config              Set and check the odooscaffold config
 
-    Openerp Developer Comunity Tool Development by Vauxoo Team (lp:~vauxoo)
+    Odoo Developer Comunity Tool Development by Vauxoo Team (https://github.com/vauxoo)
     Coded by Katherine Zaoral <kathy@vauxoo.com>.
-    Source code at lp:vauxoo-private/oerpmodule.
+    Source code at git@github.com:Vauxoo/odoo-scaffold.git
 
 Configure
 ---------
 
-If you try to use the oerpmodule you will get errors because first you need to
-configure some info about the repositories and launchpad. Go to gonfig.py file
+If you try to use the odooscaffold you will get errors because first you need to
+configure some info about the repositories and github Go to config.py file
 and you will find a list of repositories. You need to set the correct data for
 your computer to make the correct link to use the branchs functionality.
 
@@ -87,18 +87,18 @@ To run the installed script just type the command `oerpmodule` and it will show
 you what are avaible actions and the required parameters. For more detail
 information you can write in your console::
 
-    $ oerpmodule --help
-    $ oerpmodule <action> --help
+    $ odooscaffold --help
+    $ odooscaffold <action> --help
 
 To create a new module directory with its basic structure you need to go to the
 directory you want (usually youre branch directory) and run::
 
-    $ oerpmodule create <module_name> -d "Developer <developer@email.com>" \
+    $ odooscaffold create <module_name> -d "Developer <developer@email.com>" \
     > -p "Planner <planner@email.com>" -t "Auditor <auditor@email.com>"
 
 To add a model or wizard file go inside youre module directory and run::
 
-    $ oerpmodule append <module_name> <file_type> <file_name> \
+    $ odooscaffold append <module_name> <file_type> <file_name> \
     > -d "Developer <developer@email.com>" -p "Planner <planner@email.com>" \
     > -t "Auditor <auditor@email.com>"
 
